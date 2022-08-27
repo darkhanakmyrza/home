@@ -42,8 +42,8 @@ public class Ad {
   @Column(name = "price")
   private int price;
 
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_id")
   private User user;
 
   public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price, User user) {

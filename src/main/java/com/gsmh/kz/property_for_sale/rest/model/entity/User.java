@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,7 +21,7 @@ public class User {
     @Column(name = "id")
     @SequenceGenerator(name = "usersIdSeq", sequenceName = "users_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersIdSeq")
-    private int id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -34,6 +35,6 @@ public class User {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @OneToMany(targetEntity = Ad.class,cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
     private List<Ad> ads;
 }
