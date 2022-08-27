@@ -1,7 +1,7 @@
 package com.gsmh.kz.property_for_sale.rest.controller;
 
 
-import com.gsmh.kz.property_for_sale.rest.entity.Ad;
+import com.gsmh.kz.property_for_sale.rest.model.entity.Ad;
 import com.gsmh.kz.property_for_sale.rest.service.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,7 @@
 package com.gsmh.kz.property_for_sale.rest.service;
 
-import com.gsmh.kz.property_for_sale.rest.entity.User;
+import com.gsmh.kz.property_for_sale.rest.model.dto.UserDto;
+import com.gsmh.kz.property_for_sale.rest.model.entity.User;
 
 import java.util.List;
 
@@ -8,9 +9,9 @@ public interface UserService {
 
   List<User> getAllUsers();
 
-  void saveUser (User user);
+  User saveUser (UserDto userDto);
 
-  void updateUser(User user);
+  User updateUser(UserDto userDto);
 
   User getUser(Long id);
 

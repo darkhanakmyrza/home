@@ -1,6 +1,6 @@
 package com.gsmh.kz.property_for_sale.rest.service;
 
-import com.gsmh.kz.property_for_sale.rest.entity.Ad;
+import com.gsmh.kz.property_for_sale.rest.model.entity.Ad;
 import com.gsmh.kz.property_for_sale.rest.repository.AdRepository;
 import org.springframework.stereotype.Service;
 

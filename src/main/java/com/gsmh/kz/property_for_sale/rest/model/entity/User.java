@@ -1,4 +1,4 @@
-package com.gsmh.kz.property_for_sale.rest.entity;
+package com.gsmh.kz.property_for_sale.rest.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

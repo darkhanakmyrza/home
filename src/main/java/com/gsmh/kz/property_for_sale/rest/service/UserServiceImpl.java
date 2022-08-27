@@ -1,6 +1,7 @@
 package com.gsmh.kz.property_for_sale.rest.service;
 
-import com.gsmh.kz.property_for_sale.rest.entity.User;
+import com.gsmh.kz.property_for_sale.rest.model.dto.UserDto;
+import com.gsmh.kz.property_for_sale.rest.model.entity.User;
 import com.gsmh.kz.property_for_sale.rest.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,13 +22,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveUser(User user) {
-        userRepository.save(user);
+    public User saveUser(UserDto userDto) {
+
+        return userRepository.save(userDto.toEntity());
     }
 
     @Override
-    public void updateUser(User user) {
-        userRepository.save(user);
+    public User updateUser(UserDto userDto) {
+        return userRepository.save(userDto.toEntity());
     }
 
     @Override
