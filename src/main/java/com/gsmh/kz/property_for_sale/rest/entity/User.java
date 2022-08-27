@@ -34,6 +34,6 @@ public class User {
     @Column(name = "is_active")
     private boolean isActive;
 
-    @OneToMany(targetEntity = Ad.class,cascade = CascadeType.ALL, mappedBy = "client")
+    @OneToMany(targetEntity = Ad.class,cascade = CascadeType.ALL, mappedBy = "user")
     private List<Ad> ads;
 }

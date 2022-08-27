@@ -21,7 +21,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUser(@PathVariable Long id) {
-        return userService.getClient(id);
+        return userService.getUser(id);
     }
 
     @PostMapping
@@ -38,7 +38,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public String deleteEmployee(@PathVariable Long id) {
-        userService.deleteClient(id);
+        userService.deleteUser(id);
         return "User with id " + id + " was deleted";
     }
 
