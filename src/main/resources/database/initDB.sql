@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS clients
+CREATE TABLE IF NOT EXISTS users
 (
     id    SERIAL PRIMARY KEY ,
     name  VARCHAR(200) NOT NULL ,
@@ -6,9 +6,11 @@ CREATE TABLE IF NOT EXISTS clients
     phone VARCHAR(50)  NOT NULL
 );
 
+
+
 CREATE TABLE IF NOT EXISTS ads (
                          id SERIAL PRIMARY KEY,
-                         client_id INT NOT NULL,
+                         user_id INT NOT NULL,
                          description TEXT NOT NULL,
                          rooms_count INT NOT NULL,
                          house_number INT NOT NULL,
@@ -16,5 +18,5 @@ CREATE TABLE IF NOT EXISTS ads (
                          floors_count INT NOT NULL,
                          creation_year INT NOT NULL,
                          price INT NOT NULL,
-                         FOREIGN KEY(client_id) REFERENCES clients(id)
+                         FOREIGN KEY (user_id) REFERENCES users(id)
 );
