@@ -21,7 +21,6 @@ public class Ad {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adsIdSeq")
   private Long id;
 
-
   @Column(name = "description")
   private String description;
 
@@ -47,4 +46,14 @@ public class Ad {
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
+  public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price, User user) {
+    this.description = description;
+    this.roomsCount = roomsCount;
+    this.houseNumber = houseNumber;
+    this.floor = floor;
+    this.floorsCount = floorsCount;
+    this.creationYear = creationYear;
+    this.price = price;
+    this.user = user;
+  }
 }
