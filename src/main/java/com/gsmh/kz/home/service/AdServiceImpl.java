@@ -5,7 +5,9 @@ import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.repository.AdRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -38,17 +40,13 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public Ad getAd(int id) {
-        Ad ad = null;
-        Optional<Ad> optionalAd = adRepository.findById(id);
-        if (optionalAd.isPresent()) {
-            ad = optionalAd.get();
-        }
-        return ad;
+    public Ad getAd(Long id) {
+        return adRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ads not found "));
     }
 
     @Override
-    public void deleteAd(int id) {
+    public void deleteAd(Long id) {
         adRepository.deleteById(id);
     }
 }

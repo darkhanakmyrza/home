@@ -11,7 +11,7 @@ public interface AdService {
 
   Ad saveAd(AdsDto adsDto);
 
-  Ad getAd(int id);
+  Ad getAd(Long id);
 
-  void deleteAd(int id);
+  void deleteAd(Long id);
 }

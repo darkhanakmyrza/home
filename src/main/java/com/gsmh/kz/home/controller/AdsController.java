@@ -23,7 +23,7 @@ public class AdsController {
     }
 
     @GetMapping("/{id}")
-    public Ad getAd(@PathVariable int id) {
+    public Ad getAd(@PathVariable Long id) {
         Ad ad = adService.getAd(id);
         return ad;
     }
