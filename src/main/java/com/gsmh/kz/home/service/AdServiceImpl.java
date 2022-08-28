@@ -4,8 +4,11 @@ import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.repository.AdRepository;
+import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,6 +21,7 @@ public class AdServiceImpl implements AdService {
 
     private final AdRepository adRepository;
     private final UserService userService;
+    private final SecurityService securityService;
 
     @Override
     public List<Ad> getAllAds() {
@@ -41,8 +45,10 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Ad getAd(Long id) {
-        return adRepository.findById(id).orElseThrow(
+        Ad ad =  adRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ads not found "));
+        if (!ad.getUser().equals(securityService.getCurrentUser())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        return ad;
     }
 
     @Override

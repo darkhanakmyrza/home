@@ -25,4 +25,6 @@ public interface UserService {
   ResponseEntity<?> authenticateUser(LoginRequest loginRequest);
 
   ResponseEntity<?> registerUser(SignupRequest signUpRequest);
+
+  User getByPhone(String phone);
 }
