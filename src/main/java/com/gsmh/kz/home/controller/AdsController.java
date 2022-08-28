@@ -31,6 +31,7 @@ public class AdsController {
     }
 
     @PostMapping
+    @PreAuthorize("isAuthenticated()")
     public Ad addNewAd(@RequestBody AdsDto adsDto) {
         return adService.saveAd(adsDto);
     }
@@ -43,6 +44,7 @@ public class AdsController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public String deleteAds(@PathVariable Long id){
         adService.deleteAd(id);
         return "ads removed";
