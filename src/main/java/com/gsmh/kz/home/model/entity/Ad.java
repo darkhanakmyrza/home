@@ -6,8 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.minidev.json.annotate.JsonIgnore;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "ads")
@@ -17,74 +20,83 @@ import javax.persistence.*;
 @Getter
 public class Ad {
 
-  @Id
-  @Column(name = "id")
-  @SequenceGenerator(name = "adsIdSeq", sequenceName = "ads_id_seq", allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adsIdSeq")
-  private Long id;
+    @Id
+    @Column(name = "id")
+    @SequenceGenerator(name = "adsIdSeq", sequenceName = "ads_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adsIdSeq")
+    private Long id;
 
-  @Column(name = "description")
-  private String description;
+    @Column(name = "description")
+    private String description;
 
-  @Column(name = "rooms_count")
-  private int roomsCount;
+    @Column(name = "rooms_count")
+    private int roomsCount;
 
-  @Column(name = "house_number")
-  private int houseNumber;
+    @Column(name = "house_number")
+    private int houseNumber;
 
-  @Column(name = "floor")
-  private int floor;
+    @Column(name = "floor")
+    private int floor;
 
-  @Column(name = "floors_count")
-  private int floorsCount;
+    @Column(name = "floors_count")
+    private int floorsCount;
 
-  @Column(name = "creation_year")
-  private int creationYear;
+    @Column(name = "creation_year")
+    private int creationYear;
 
-  @Column(name = "price")
-  private int price;
+    @Column(name = "price")
+    private int price;
 
-  @JsonIgnore
-  @NotNull
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id")
-  private User user;
+    @CreatedDate
+    @Column(nullable = false, updatable = false)
+    private Date createdDate;
 
-  private Boolean isPledged;
+    @JsonIgnore
+    @LastModifiedDate
+    @Column(nullable = false)
+    private Date updatedDate;
 
-  private String balcony;
+    @JsonIgnore
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 
-  private Boolean isBalconyGlazed;
+    private Boolean isPledged;
 
-  private String furniture;
+    private String balcony;
 
-  private String ceilingHeight;
+    private Boolean isBalconyGlazed;
 
-  private String safety;
+    private String furniture;
 
-  private Boolean exchange;
+    private String ceilingHeight;
 
-  private Long payment;
+    private String safety;
 
-  private Long rassrochkaPrice;
+    private Boolean exchange;
 
-  private String propertyType;
+    private Long payment;
 
-  private String region;
+    private Long rassrochkaPrice;
 
-  private String city;
+    private String propertyType;
 
-  private String status;
+    private String region;
+
+    private String city;
+
+    private String status;
 
 
-  public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price, User user) {
-    this.description = description;
-    this.roomsCount = roomsCount;
-    this.houseNumber = houseNumber;
-    this.floor = floor;
-    this.floorsCount = floorsCount;
-    this.creationYear = creationYear;
-    this.price = price;
-    this.user = user;
-  }
+    public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price, User user) {
+        this.description = description;
+        this.roomsCount = roomsCount;
+        this.houseNumber = houseNumber;
+        this.floor = floor;
+        this.floorsCount = floorsCount;
+        this.creationYear = creationYear;
+        this.price = price;
+        this.user = user;
+    }
 }

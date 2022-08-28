@@ -41,7 +41,9 @@ public class AdsController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAds(@PathVariable Long id){
+    public String deleteAds(@PathVariable Long id){
         adService.deleteAd(id);
+        return "ads removed";
     }
+
 }

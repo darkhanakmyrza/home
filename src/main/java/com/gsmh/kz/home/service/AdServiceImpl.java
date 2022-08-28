@@ -6,12 +6,14 @@ import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.repository.AdRepository;
 import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,6 +67,10 @@ public class AdServiceImpl implements AdService {
     public List<Ad> getMyAds() {
         User user = securityService.getCurrentUser();
         return getAdsByUser(user.getId());
+    }
+
+    public List<Ad> filterAds(Integer limit, Integer offset){
+        adRepository.findAll()
     }
 
 

@@ -8,4 +8,7 @@ import java.util.List;
 public interface AdRepository extends JpaRepository<Ad, Long> {
 
     public List<Ad> findByUserId(Long id);
+
+
+    public List<Ad> filterAd(Integer limit, Integer offset);
 }
