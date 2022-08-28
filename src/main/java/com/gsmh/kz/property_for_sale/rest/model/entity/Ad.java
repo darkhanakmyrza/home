@@ -48,6 +48,33 @@ public class Ad {
   @JoinColumn(name = "user_id")
   private User user;
 
+  private Boolean isPledged;
+
+  private String balcony;
+
+  private Boolean isBalconyGlazed;
+
+  private String furniture;
+
+  private String ceilingHeight;
+
+  private String safety;
+
+  private Boolean exchange;
+
+  private Long payment;
+
+  private Long rassrochkaPrice;
+
+  private String propertyType;
+
+  private String region;
+
+  private String city;
+
+  private String status;
+
+
   public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price, User user) {
     this.description = description;
     this.roomsCount = roomsCount;

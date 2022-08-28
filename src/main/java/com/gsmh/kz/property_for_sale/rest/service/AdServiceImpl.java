@@ -31,7 +31,7 @@ public class AdServiceImpl implements AdService {
                 adsDto.getHouseNumber(),
                 adsDto.getFloor(),
                 adsDto.getFloorsCount(),
-                adsDto.getCreationYear(),
+                adsDto.getConstructionYear(),
                 adsDto.getPrice(),
                 user);
         return adRepository.save(ads);

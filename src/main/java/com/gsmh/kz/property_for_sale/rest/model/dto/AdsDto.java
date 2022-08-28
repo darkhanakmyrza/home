@@ -14,7 +14,20 @@ public class AdsDto {
     private int houseNumber;
     private int floor;
     private int floorsCount;
-    private int creationYear;
+    private int constructionYear;
     private int price;
     private Long userId;
+    private Boolean isPledged;
+    private String balcony;
+    private Boolean isBalconyGlazed;
+    private String furniture;
+    private String ceilingHeight;
+    private String safety;
+    private Boolean exchange;
+    private Long payment;
+    private Long rassrochkaPrice;
+    private String propertyType;
+    private String region;
+    private String city;
+
 }
