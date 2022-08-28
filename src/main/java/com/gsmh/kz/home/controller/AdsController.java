@@ -39,4 +39,9 @@ public class AdsController {
     public List<Ad> findByUserId(@PathVariable Long id){
         return adService.getAdsByUser(id);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteAds(@PathVariable Long id){
+        adService.deleteAd(id);
+    }
 }
