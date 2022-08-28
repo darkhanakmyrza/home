@@ -33,4 +33,10 @@ public class AdsController {
         return adService.saveAd(adsDto);
     }
 
+
+
+    @GetMapping("/findByUserId/{id}")
+    public List<Ad> findByUserId(@PathVariable Long id){
+        return adService.getAdsByUser(id);
+    }
 }

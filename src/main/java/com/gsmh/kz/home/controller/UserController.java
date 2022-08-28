@@ -3,6 +3,7 @@ package com.gsmh.kz.home.controller;
 import com.gsmh.kz.home.model.dto.LoginRequest;
 import com.gsmh.kz.home.model.dto.SignupRequest;
 import com.gsmh.kz.home.model.dto.UserDto;
+import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.service.UserService;
 import lombok.AllArgsConstructor;

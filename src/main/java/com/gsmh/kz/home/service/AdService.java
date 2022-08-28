@@ -14,4 +14,8 @@ public interface AdService {
   Ad getAd(Long id);
 
   void deleteAd(Long id);
+
+  List<Ad> getAdsByUser(Long userId);
+
+  List<Ad> getMyAds();
 }

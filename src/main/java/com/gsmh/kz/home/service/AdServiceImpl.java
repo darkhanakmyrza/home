@@ -55,4 +55,17 @@ public class AdServiceImpl implements AdService {
     public void deleteAd(Long id) {
         adRepository.deleteById(id);
     }
+
+    @Override
+    public List<Ad> getAdsByUser(Long userId) {
+        return adRepository.findByUserId(userId);
+    }
+
+    @Override
+    public List<Ad> getMyAds() {
+        User user = securityService.getCurrentUser();
+        return getAdsByUser(user.getId());
+    }
+
+
 }
