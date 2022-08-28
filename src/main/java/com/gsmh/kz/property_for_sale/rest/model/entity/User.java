@@ -34,7 +34,7 @@ public class User {
 
     @Column(name = "is_active")
     private boolean isActive;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Ad> ads;
+//
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.LAZY)
+//    private List<Ad> ads;
 }

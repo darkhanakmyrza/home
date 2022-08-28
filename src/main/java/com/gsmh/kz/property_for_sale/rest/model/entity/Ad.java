@@ -1,5 +1,6 @@
 package com.gsmh.kz.property_for_sale.rest.model.entity;
 
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +43,7 @@ public class Ad {
   @Column(name = "price")
   private int price;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
   private User user;
