@@ -30,7 +30,7 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Ad saveAd(AdsDto adsDto) {
-        User user = userService.getUser(adsDto.getUserId());
+        User user = securityService.getCurrentUser();
         Ad ads = new Ad(
                 adsDto.getDescription(),
                 adsDto.getRoomsCount(),

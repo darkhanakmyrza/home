@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 
@@ -43,6 +44,7 @@ public class Ad {
   @Column(name = "price")
   private int price;
 
+  @JsonIgnore
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id")
