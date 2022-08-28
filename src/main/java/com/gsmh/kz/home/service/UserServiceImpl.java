@@ -9,6 +9,8 @@ import com.gsmh.kz.home.repository.RoleRepository;
 import com.gsmh.kz.home.repository.UserRepository;
 import com.gsmh.kz.home.service.security.UserDetailsImpl;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder encoder;
     private AuthenticationManager authenticationManager;
     private JwtUtils jwtUtils;
-
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public List<User> getAllUsers() {
@@ -70,6 +72,7 @@ public class UserServiceImpl implements UserService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
+        logger.info("jwt " + jwt);
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()

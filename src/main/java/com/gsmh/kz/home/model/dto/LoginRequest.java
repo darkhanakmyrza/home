@@ -3,10 +3,7 @@ package com.gsmh.kz.home.model.dto;
 import javax.validation.constraints.NotBlank;
 
 public class LoginRequest {
-    @NotBlank
     private String phone;
-
-    @NotBlank
     private String password;
 
     public String getPhone() {

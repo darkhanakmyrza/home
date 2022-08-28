@@ -11,12 +11,16 @@ import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "users")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@Table(	name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "phone"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class User {
 
     @Id
