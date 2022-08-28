@@ -1,6 +1,7 @@
 package com.gsmh.kz.home.service;
 
 import com.gsmh.kz.home.model.dto.AdsDto;
+import com.gsmh.kz.home.model.dto.AdsResponse;
 import com.gsmh.kz.home.model.entity.Ad;
 
 import java.util.List;
@@ -18,4 +19,5 @@ public interface AdService {
   List<Ad> getAdsByUser(Long userId);
 
   List<Ad> getMyAds();
+  AdsResponse filterAds(Integer limit, Integer offset);
 }

@@ -48,7 +48,7 @@ public class Ad {
     private int price;
 
     @CreatedDate
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false)
     private Date createdDate;
 
     @JsonIgnore

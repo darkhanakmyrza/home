@@ -1,6 +1,7 @@
 package com.gsmh.kz.home.service;
 
 import com.gsmh.kz.home.model.dto.AdsDto;
+import com.gsmh.kz.home.model.dto.AdsResponse;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.repository.AdRepository;
@@ -47,14 +48,17 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public Ad getAd(Long id) {
-        Ad ad =  adRepository.findById(id).orElseThrow(
+        Ad ad = adRepository.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ads not found "));
-        if (!ad.getUser().equals(securityService.getCurrentUser())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         return ad;
     }
 
     @Override
     public void deleteAd(Long id) {
+        Ad ad = adRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ads not found "));
+        if (!ad.getUser().equals(securityService.getCurrentUser()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         adRepository.deleteById(id);
     }
 
@@ -69,8 +73,10 @@ public class AdServiceImpl implements AdService {
         return getAdsByUser(user.getId());
     }
 
-    public List<Ad> filterAds(Integer limit, Integer offset){
-        adRepository.findAll()
+    public AdsResponse filterAds(Integer limit, Integer offset) {
+        List<Ad> adList = adRepository.filterAd(limit, offset);
+        Integer count = adRepository.filterAdCount();
+        return new AdsResponse(count, adList);
     }
 
 

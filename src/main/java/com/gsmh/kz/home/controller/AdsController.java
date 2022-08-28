@@ -2,9 +2,11 @@ package com.gsmh.kz.home.controller;
 
 
 import com.gsmh.kz.home.model.dto.AdsDto;
+import com.gsmh.kz.home.model.dto.AdsResponse;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.service.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,6 +46,11 @@ public class AdsController {
     public String deleteAds(@PathVariable Long id){
         adService.deleteAd(id);
         return "ads removed";
+    }
+
+    @PostMapping("/filter/{limit}/{offset}")
+    public AdsResponse filterAds(@PathVariable Integer limit, @PathVariable Integer offset){
+        return adService.filterAds(limit, offset);
     }
 
 }
