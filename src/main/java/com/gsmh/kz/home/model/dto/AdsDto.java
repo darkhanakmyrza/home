@@ -1,9 +1,7 @@
-package com.gsmh.kz.property_for_sale.rest.model.dto;
+package com.gsmh.kz.home.model.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.Column;
 
 @Getter
 @Setter

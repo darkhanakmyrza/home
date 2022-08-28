@@ -1,8 +1,8 @@
-package com.gsmh.kz.property_for_sale.rest.controller;
+package com.gsmh.kz.home.controller;
 
-import com.gsmh.kz.property_for_sale.rest.model.dto.UserDto;
-import com.gsmh.kz.property_for_sale.rest.model.entity.User;
-import com.gsmh.kz.property_for_sale.rest.service.UserService;
+import com.gsmh.kz.home.model.dto.UserDto;
+import com.gsmh.kz.home.model.entity.User;
+import com.gsmh.kz.home.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

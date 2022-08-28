@@ -1,13 +1,11 @@
-package com.gsmh.kz.property_for_sale.rest.model.entity;
+package com.gsmh.kz.home.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "users")

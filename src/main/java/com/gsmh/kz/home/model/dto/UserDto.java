@@ -1,7 +1,7 @@
-package com.gsmh.kz.property_for_sale.rest.model.dto;
+package com.gsmh.kz.home.model.dto;
 
 
-import com.gsmh.kz.property_for_sale.rest.model.entity.User;
+import com.gsmh.kz.home.model.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 

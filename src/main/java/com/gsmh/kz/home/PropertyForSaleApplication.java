@@ -1,4 +1,4 @@
-package com.gsmh.kz.property_for_sale;
+package com.gsmh.kz.home;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

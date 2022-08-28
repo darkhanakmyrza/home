@@ -1,7 +1,7 @@
-package com.gsmh.kz.property_for_sale.rest.service;
+package com.gsmh.kz.home.service;
 
-import com.gsmh.kz.property_for_sale.rest.model.dto.UserDto;
-import com.gsmh.kz.property_for_sale.rest.model.entity.User;
+import com.gsmh.kz.home.model.dto.UserDto;
+import com.gsmh.kz.home.model.entity.User;
 
 import java.util.List;
 

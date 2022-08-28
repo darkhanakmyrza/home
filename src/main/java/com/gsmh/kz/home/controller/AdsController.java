@@ -1,9 +1,9 @@
-package com.gsmh.kz.property_for_sale.rest.controller;
+package com.gsmh.kz.home.controller;
 
 
-import com.gsmh.kz.property_for_sale.rest.model.dto.AdsDto;
-import com.gsmh.kz.property_for_sale.rest.model.entity.Ad;
-import com.gsmh.kz.property_for_sale.rest.service.AdService;
+import com.gsmh.kz.home.model.dto.AdsDto;
+import com.gsmh.kz.home.model.entity.Ad;
+import com.gsmh.kz.home.service.AdService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

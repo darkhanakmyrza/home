@@ -1,9 +1,9 @@
-package com.gsmh.kz.property_for_sale.rest.service;
+package com.gsmh.kz.home.service;
 
-import com.gsmh.kz.property_for_sale.rest.model.dto.AdsDto;
-import com.gsmh.kz.property_for_sale.rest.model.entity.Ad;
-import com.gsmh.kz.property_for_sale.rest.model.entity.User;
-import com.gsmh.kz.property_for_sale.rest.repository.AdRepository;
+import com.gsmh.kz.home.model.dto.AdsDto;
+import com.gsmh.kz.home.model.entity.Ad;
+import com.gsmh.kz.home.model.entity.User;
+import com.gsmh.kz.home.repository.AdRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

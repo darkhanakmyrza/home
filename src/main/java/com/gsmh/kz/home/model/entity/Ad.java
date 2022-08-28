@@ -1,4 +1,4 @@
-package com.gsmh.kz.property_for_sale.rest.model.entity;
+package com.gsmh.kz.home.model.entity;
 
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
