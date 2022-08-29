@@ -11,6 +11,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class AdsResponse {
-    Integer count;
-    List<Ad> list;
+  Integer count;
+  List<Ad> list;
 }

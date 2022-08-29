@@ -16,47 +16,37 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(	name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "phone"),
-                @UniqueConstraint(columnNames = "email")
-        })
+@Table(name = "users",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = "phone"),
+        @UniqueConstraint(columnNames = "email")
+    })
 public class User {
+  @Id
+  @Column(name = "id")
+  @SequenceGenerator(name = "usersIdSeq", sequenceName = "users_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersIdSeq")
+  private Long id;
 
-    @Id
-    @Column(name = "id")
-    @SequenceGenerator(name = "usersIdSeq", sequenceName = "users_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersIdSeq")
-    private Long id;
+  @Column(name = "name")
+  private String name;
 
-    @Column(name = "name")
-    private String name;
+  @Column(name = "email")
+  private String email;
 
-    @Column(name = "email")
-    private String email;
+  @Column(name = "phone")
+  private String phone;
 
-    @Column(name = "phone")
-    private String phone;
+  @Column(name = "is_active")
+  private boolean isActive;
 
-    @Column(name = "is_active")
-    private boolean isActive;
+  @NotBlank
+  @Size(max = 120)
+  private String password;
 
-    @NotBlank
-    @Size(max = 120)
-    private String password;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(	name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "user_roles",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "role_id"))
+  private Set<Role> roles = new HashSet<>();
 }

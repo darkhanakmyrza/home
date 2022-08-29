@@ -19,84 +19,84 @@ import java.util.Date;
 @Setter
 @Getter
 public class Ad {
+  @Id
+  @Column(name = "id")
+  @SequenceGenerator(name = "adsIdSeq", sequenceName = "ads_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adsIdSeq")
+  private Long id;
 
-    @Id
-    @Column(name = "id")
-    @SequenceGenerator(name = "adsIdSeq", sequenceName = "ads_id_seq", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "adsIdSeq")
-    private Long id;
+  @Column(name = "description")
+  private String description;
 
-    @Column(name = "description")
-    private String description;
+  @Column(name = "rooms_count")
+  private int roomsCount;
 
-    @Column(name = "rooms_count")
-    private int roomsCount;
+  @Column(name = "house_number")
+  private int houseNumber;
 
-    @Column(name = "house_number")
-    private int houseNumber;
+  @Column(name = "floor")
+  private int floor;
 
-    @Column(name = "floor")
-    private int floor;
+  @Column(name = "floors_count")
+  private int floorsCount;
 
-    @Column(name = "floors_count")
-    private int floorsCount;
+  @Column(name = "creation_year")
+  private int creationYear;
 
-    @Column(name = "creation_year")
-    private int creationYear;
+  @Column(name = "price")
+  private int price;
 
-    @Column(name = "price")
-    private int price;
+  @CreatedDate
+  @Column(nullable = false)
+  private Date createdDate;
 
-    @CreatedDate
-    @Column(nullable = false)
-    private Date createdDate;
+  @JsonIgnore
+  @LastModifiedDate
+  @Column(nullable = false)
+  private Date updatedDate;
 
-    @JsonIgnore
-    @LastModifiedDate
-    @Column(nullable = false)
-    private Date updatedDate;
+  @JsonIgnore
+  @NotNull
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_id")
+  private User user;
 
-    @JsonIgnore
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+  private Boolean isPledged;
 
-    private Boolean isPledged;
+  private String balcony;
 
-    private String balcony;
+  private Boolean isBalconyGlazed;
 
-    private Boolean isBalconyGlazed;
+  private String furniture;
 
-    private String furniture;
+  private String ceilingHeight;
 
-    private String ceilingHeight;
+  private String safety;
 
-    private String safety;
+  private Boolean exchange;
 
-    private Boolean exchange;
+  private Long payment;
 
-    private Long payment;
+  private Long rassrochkaPrice;
 
-    private Long rassrochkaPrice;
+  private String propertyType;
 
-    private String propertyType;
+  private String region;
 
-    private String region;
+  private String city;
 
-    private String city;
+  private String status;
 
-    private String status;
-
-
-    public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price, User user) {
-        this.description = description;
-        this.roomsCount = roomsCount;
-        this.houseNumber = houseNumber;
-        this.floor = floor;
-        this.floorsCount = floorsCount;
-        this.creationYear = creationYear;
-        this.price = price;
-        this.user = user;
-    }
+  public Ad(String description, int roomsCount, int houseNumber,
+            int floor, int floorsCount, int creationYear, int price, User user
+  ) {
+    this.description = description;
+    this.roomsCount = roomsCount;
+    this.houseNumber = houseNumber;
+    this.floor = floor;
+    this.floorsCount = floorsCount;
+    this.creationYear = creationYear;
+    this.price = price;
+    this.user = user;
+  }
 }

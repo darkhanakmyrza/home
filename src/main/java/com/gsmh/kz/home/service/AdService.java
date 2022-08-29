@@ -7,7 +7,6 @@ import com.gsmh.kz.home.model.entity.Ad;
 import java.util.List;
 
 public interface AdService {
-
   List<Ad> getAllAds();
 
   Ad saveAd(AdsDto adsDto);
@@ -19,5 +18,6 @@ public interface AdService {
   List<Ad> getAdsByUser(Long userId);
 
   List<Ad> getMyAds();
+
   AdsResponse filterAds(Integer limit, Integer offset);
 }
