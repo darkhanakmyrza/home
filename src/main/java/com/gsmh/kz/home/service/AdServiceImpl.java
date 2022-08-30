@@ -7,77 +7,70 @@ import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.repository.AdRepository;
 import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.awt.print.Pageable;
 import java.util.List;
-import java.util.Optional;
+
+import static com.gsmh.kz.home.constants.ServiceConstants.ADS_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
 public class AdServiceImpl implements AdService {
+  private final AdRepository adRepository;
+  private final SecurityService securityService;
 
-    private final AdRepository adRepository;
-    private final UserService userService;
-    private final SecurityService securityService;
+  @Override
+  public List<Ad> getAllAds() {
+    return adRepository.findAll();
+  }
 
-    @Override
-    public List<Ad> getAllAds() {
-        return adRepository.findAll();
-    }
+  @Override
+  public Ad saveAd(AdsDto adsDto) {
+    User user = securityService.getCurrentUser();
+    Ad ads = new Ad(
+        adsDto.getDescription(),
+        adsDto.getRoomsCount(),
+        adsDto.getHouseNumber(),
+        adsDto.getFloor(),
+        adsDto.getFloorsCount(),
+        adsDto.getConstructionYear(),
+        adsDto.getPrice(),
+        user);
+    return adRepository.save(ads);
+  }
 
-    @Override
-    public Ad saveAd(AdsDto adsDto) {
-        User user = securityService.getCurrentUser();
-        Ad ads = new Ad(
-                adsDto.getDescription(),
-                adsDto.getRoomsCount(),
-                adsDto.getHouseNumber(),
-                adsDto.getFloor(),
-                adsDto.getFloorsCount(),
-                adsDto.getConstructionYear(),
-                adsDto.getPrice(),
-                user);
-        return adRepository.save(ads);
-    }
+  @Override
+  public Ad getAd(Long id) {
+    Ad ad = adRepository.findById(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, ADS_NOT_FOUND));
+    return ad;
+  }
 
-    @Override
-    public Ad getAd(Long id) {
-        Ad ad = adRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ads not found "));
-        return ad;
-    }
+  @Override
+  public void deleteAd(Long id) {
+    Ad ad = adRepository.findById(id).orElseThrow(
+        () -> new ResponseStatusException(HttpStatus.NOT_FOUND, ADS_NOT_FOUND));
+    if (!ad.getUser().equals(securityService.getCurrentUser()))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    adRepository.deleteById(id);
+  }
 
-    @Override
-    public void deleteAd(Long id) {
-        Ad ad = adRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ads not found "));
-        if (!ad.getUser().equals(securityService.getCurrentUser()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        adRepository.deleteById(id);
-    }
+  @Override
+  public List<Ad> getAdsByUser(Long userId) {
+    return adRepository.findByUserId(userId);
+  }
 
-    @Override
-    public List<Ad> getAdsByUser(Long userId) {
-        return adRepository.findByUserId(userId);
-    }
+  @Override
+  public List<Ad> getMyAds() {
+    User user = securityService.getCurrentUser();
+    return getAdsByUser(user.getId());
+  }
 
-    @Override
-    public List<Ad> getMyAds() {
-        User user = securityService.getCurrentUser();
-        return getAdsByUser(user.getId());
-    }
-
-    public AdsResponse filterAds(Integer limit, Integer offset) {
-        List<Ad> adList = adRepository.filterAd(limit, offset);
-        Integer count = adRepository.filterAdCount();
-        return new AdsResponse(count, adList);
-    }
-
-
+  public AdsResponse filterAds(Integer limit, Integer offset) {
+    List<Ad> adList = adRepository.filterAd(limit, offset);
+    Integer count = adRepository.filterAdCount();
+    return new AdsResponse(count, adList);
+  }
 }

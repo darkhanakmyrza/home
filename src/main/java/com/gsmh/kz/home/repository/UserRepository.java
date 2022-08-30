@@ -7,12 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query(value = "select * from users where phone= :username",nativeQuery = true)
-    Optional<User> findByUsername(String username);
+  @Query(value = "select * from users where phone= :username", nativeQuery = true)
+  Optional<User> findByUsername(String username);
 
-    @Query(value = "select exists(select * from users where phone = :username)", nativeQuery = true)
-    Boolean existsByUsername(String username);
+  @Query(value = "select exists(select * from users where phone = :username)", nativeQuery = true)
+  Boolean existsByUsername(String username);
 
-    Boolean existsByEmail(String email);
-
+  Boolean existsByEmail(String email);
 }

@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,97 +28,96 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static com.gsmh.kz.home.constants.ServiceConstants.*;
+
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
+  private UserRepository userRepository;
+  private RoleRepository roleRepository;
+  private PasswordEncoder encoder;
+  private AuthenticationManager authenticationManager;
+  private JwtUtils jwtUtils;
+  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder encoder;
-    private AuthenticationManager authenticationManager;
-    private JwtUtils jwtUtils;
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+  @Override
+  public List<User> getAllUsers() {
+    return userRepository.findAll();
+  }
 
-    @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+  @Override
+  public User saveUser(UserDto userDto) {
+    return userRepository.save(userDto.toEntity());
+  }
+
+  @Override
+  public User updateUser(UserDto userDto) {
+    return userRepository.save(userDto.toEntity());
+  }
+
+  @Override
+  public User getUser(Long id) {
+    User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    return user;
+  }
+
+  @Override
+  public void deleteUser(Long id) {
+    User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    userRepository.delete(user);
+  }
+
+  @Override
+  public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
+    Authentication authentication = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(loginRequest.getPhone(), loginRequest.getPassword()));
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String jwt = jwtUtils.generateJwtToken(authentication);
+    logger.info("jwt " + jwt);
+
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    List<String> roles = userDetails.getAuthorities().stream()
+        .map(GrantedAuthority::getAuthority)
+        .collect(Collectors.toList());
+
+    return ResponseEntity.ok(new JwtResponse(jwt,
+        userDetails.id(),
+        userDetails.username(),
+        userDetails.email(),
+        roles));
+  }
+
+  @Override
+  public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
+    if (userRepository.existsByUsername(signUpRequest.getPhone())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, USER_NAME_ALREADY_TAKEN);
     }
 
-    @Override
-    public User saveUser(UserDto userDto) {
-
-        return userRepository.save(userDto.toEntity());
+    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, EMAIL_ALREADY_USED);
     }
 
-    @Override
-    public User updateUser(UserDto userDto) {
-        return userRepository.save(userDto.toEntity());
-    }
+    // Create new user's account
+    User user = new User();
+    user.setPhone(signUpRequest.getPhone());
+    user.setEmail(signUpRequest.getEmail());
+    user.setPassword(encoder.encode(signUpRequest.getPassword()));
 
-    @Override
-    public User getUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        return user;
-    }
+    Set<Role> roles = new HashSet<>();
+    Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT
+    ).orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
+    roles.add(clientRole);
+    user.setRoles(roles);
+    userRepository.save(user);
 
-    @Override
-    public void deleteUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        userRepository.delete(user);
-    }
+    return ResponseEntity.ok(new MessageResponse(USER_REGISTERED_SUCCESSFULLY));
+  }
 
-    @Override
-    public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getPhone(), loginRequest.getPassword()));
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtUtils.generateJwtToken(authentication);
-        logger.info("jwt " + jwt);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        List<String> roles = userDetails.getAuthorities().stream()
-                .map(item -> item.getAuthority())
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(),
-                userDetails.getUsername(),
-                userDetails.getEmail(),
-                roles));
-    }
-
-    @Override
-    public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
-        if (userRepository.existsByUsername(signUpRequest.getPhone())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error: Username is already taken");
-        }
-
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Email is already in use");
-        }
-
-        // Create new user's account
-        User user = new User();
-        user.setPhone(signUpRequest.getPhone());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(encoder.encode(signUpRequest.getPassword()));
-
-        Set<Role> roles = new HashSet<>();
-        Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT).orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        roles.add(clientRole);
-        user.setRoles(roles);
-        userRepository.save(user);
-
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-    }
-
-    @Override
-    public User getByPhone(String phone) {
-        User user = userRepository.findByUsername(phone)
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + phone));
-        return user;
-    }
-
-
+  @Override
+  public User getByPhone(String phone) {
+    User user = userRepository.findByUsername(phone)
+        .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_NAME + phone));
+    return user;
+  }
 }

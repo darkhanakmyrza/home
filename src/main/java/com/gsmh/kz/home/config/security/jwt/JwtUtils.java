@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+import static com.gsmh.kz.home.constants.JWTConstants.*;
+
 @Component
 public class JwtUtils {
   private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
@@ -24,7 +26,7 @@ public class JwtUtils {
 
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
-    return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
+    return Jwts.builder().setSubject((userPrincipal.username())).setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
         .compact();
   }
@@ -38,17 +40,16 @@ public class JwtUtils {
       Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
       return true;
     } catch (SignatureException e) {
-      logger.error("Invalid JWT signature: {}", e.getMessage());
+      logger.error(INVALID_JWT_SIGNATURE, e.getMessage());
     } catch (MalformedJwtException e) {
-      logger.error("Invalid JWT token: {}", e.getMessage());
+      logger.error(INVALID_JWT_TOKEN, e.getMessage());
     } catch (ExpiredJwtException e) {
-      logger.error("JWT token is expired: {}", e.getMessage());
+      logger.error(JWT_TOKEN_IS_EXPIRED, e.getMessage());
     } catch (UnsupportedJwtException e) {
-      logger.error("JWT token is unsupported: {}", e.getMessage());
+      logger.error(JWT_TOKEN_IS_UNSUPPORTED, e.getMessage());
     } catch (IllegalArgumentException e) {
-      logger.error("JWT claims string is empty: {}", e.getMessage());
+      logger.error(JWT_CLAIMS_IS_EMPTY, e.getMessage());
     }
-
     return false;
   }
 }

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.gsmh.kz.home.constants.JWTConstants.*;
+
 public class AuthTokenFilter extends OncePerRequestFilter {
   @Autowired
   private JwtUtils jwtUtils;
@@ -42,17 +44,17 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
       }
     } catch (Exception e) {
-      logger.error("Cannot set user authentication: {}", e);
+      logger.error(CANNOT_SET_USER_AUTHENTICATION, e);
     }
 
     filterChain.doFilter(request, response);
   }
 
   private String parseJwt(HttpServletRequest request) {
-    String headerAuth = request.getHeader("Authorization");
+    String headerAuth = request.getHeader(AUTHORIZATION);
 
-    if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-      return headerAuth.substring(7, headerAuth.length());
+    if (StringUtils.hasText(headerAuth) && headerAuth.startsWith(BEARER)) {
+      return headerAuth.substring(7);
     }
 
     return null;
