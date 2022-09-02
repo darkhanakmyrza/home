@@ -1,5 +1,6 @@
 package com.gsmh.kz.home.model.entity;
 
+import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -85,7 +86,7 @@ public class Ad {
 
   private String city;
 
-  private String status;
+  private AdModeratorStatusEnum moderatorStatus;
 
   public Ad(String description, int roomsCount, int houseNumber,
             int floor, int floorsCount, int creationYear, int price, User user

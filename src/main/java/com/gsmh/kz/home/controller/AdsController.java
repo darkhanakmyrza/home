@@ -5,6 +5,7 @@ import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.dto.AdsResponse;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.service.AdService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ads")
+@AllArgsConstructor
 public class AdsController {
-  public final AdService adService;
-
-  public AdsController(AdService adService) {
-    this.adService = adService;
-  }
+  private final AdService adService;
 
   @GetMapping
   public List<Ad> shawAllAds() {
@@ -37,7 +35,6 @@ public class AdsController {
     return adService.saveAd(adsDto);
   }
 
-
   @GetMapping("/findByUserId/{id}")
   public List<Ad> findByUserId(@PathVariable Long id) {
     return adService.getAdsByUser(id);
@@ -53,5 +50,11 @@ public class AdsController {
   @PostMapping("/filter/{limit}/{offset}")
   public AdsResponse filterAds(@PathVariable Integer limit, @PathVariable Integer offset) {
     return adService.filterAds(limit, offset);
+  }
+
+  @GetMapping("/allModeratingAds")
+  public List<Ad> shawAllModeratingAds() {
+    List<Ad> allModeratingAds = adService.getAllModeratingAds();
+    return allModeratingAds;
   }
 }

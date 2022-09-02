@@ -4,6 +4,7 @@ import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.dto.AdsResponse;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.User;
+import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 import com.gsmh.kz.home.repository.AdRepository;
 import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
@@ -72,5 +73,18 @@ public class AdServiceImpl implements AdService {
     List<Ad> adList = adRepository.filterAd(limit, offset);
     Integer count = adRepository.filterAdCount();
     return new AdsResponse(count, adList);
+  }
+
+  @Override
+  public List<Ad> getAllModeratingAds() {
+    List<Ad> allModeratingAds = adRepository.findByModeratorStatus(AdModeratorStatusEnum.MODERATING);
+    return allModeratingAds;
+  }
+
+  @Override
+  public void updateModeratorStatus(Long id, AdModeratorStatusEnum moderatorStatus) {
+    Ad ad = getAd(id);
+    ad.setModeratorStatus(moderatorStatus);
+    adRepository.save(ad);
   }
 }

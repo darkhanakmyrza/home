@@ -1,6 +1,7 @@
 package com.gsmh.kz.home.repository;
 
 import com.gsmh.kz.home.model.entity.Ad;
+import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,4 +15,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
   @Query(value = "select count(id) from ads", nativeQuery = true)
   Integer filterAdCount();
+
+  List<Ad> findByModeratorStatus(AdModeratorStatusEnum moderatorStatus);
 }
