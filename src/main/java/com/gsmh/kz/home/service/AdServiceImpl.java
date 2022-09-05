@@ -77,7 +77,7 @@ public class AdServiceImpl implements AdService {
 
   @Override
   public List<Ad> getAllModeratingAds() {
-    List<Ad> allModeratingAds = adRepository.findByModeratorStatus(AdModeratorStatusEnum.MODERATING);
+    List<Ad> allModeratingAds = adRepository.findByModeratorStatus(AdModeratorStatusEnum.MODERATE);
     return allModeratingAds;
   }
 
