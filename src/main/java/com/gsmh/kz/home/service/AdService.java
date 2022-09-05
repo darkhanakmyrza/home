@@ -3,6 +3,7 @@ package com.gsmh.kz.home.service;
 import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.dto.AdsResponse;
 import com.gsmh.kz.home.model.entity.Ad;
+import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 
 import java.util.List;
 
@@ -20,4 +21,8 @@ public interface AdService {
   List<Ad> getMyAds();
 
   AdsResponse filterAds(Integer limit, Integer offset);
+
+  List<Ad> getAllModeratingAds();
+
+  void updateModeratorStatus(Long id, AdModeratorStatusEnum moderatorStatus);
 }
