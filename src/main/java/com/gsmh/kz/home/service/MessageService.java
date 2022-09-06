@@ -7,6 +7,8 @@ import com.gsmh.kz.home.repository.MessageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class MessageService {
@@ -21,4 +23,10 @@ public class MessageService {
         message.setRead(false);
         return messageRepository.save(message);
     }
+
+    public List<Message> getMessagesByToUsersAndAdsId(Long fromUserId, Long toUserId, Long adsId){
+        return messageRepository.getMessageBoxByUsers(fromUserId, toUserId, adsId);
+    }
+
+
 }

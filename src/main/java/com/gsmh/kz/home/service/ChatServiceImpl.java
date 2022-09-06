@@ -7,6 +7,8 @@ import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ChatServiceImpl implements ChatService{
@@ -18,5 +20,9 @@ public class ChatServiceImpl implements ChatService{
     public void sendMessage(RequestMessageDto requestMessageDto) {
         User currentUser = securityService.getCurrentUser();
         messageService.createMessage(requestMessageDto, currentUser.getId());
+    }
+
+    public List<Message> getMessages(Long toUserId, Long adsId){
+        return messageService.getMessagesByToUsersAndAdsId(securityService.getCurrentUser().getId(), toUserId, adsId);
     }
 }
