@@ -9,4 +9,5 @@ public class RequestMessageDto {
 
     private String text;
     private Long toUserId;
+    private Long adsId;
 }

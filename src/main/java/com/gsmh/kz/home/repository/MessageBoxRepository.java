@@ -1,6 +1,5 @@
 package com.gsmh.kz.home.repository;
 
-import com.gsmh.kz.home.model.entity.MessageBox;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

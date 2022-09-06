@@ -1,9 +1,7 @@
 package com.gsmh.kz.home.controller;
 
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
-import com.gsmh.kz.home.model.entity.MessageBox;
 import com.gsmh.kz.home.service.ChatService;
-import com.gsmh.kz.home.service.MessageBoxService;
 import com.gsmh.kz.home.service.MessageService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +25,7 @@ public class ChatController {
 
     @PostMapping("/sendMessage")
     public ResponseEntity<Void> sendMessage(@RequestBody RequestMessageDto requestMessageDto){
-        return ResponseEntity.ok(chatService.sendMessage(requestMessageDto));
+        chatService.sendMessage(requestMessageDto);
+        return ResponseEntity.ok().build();
     }
 }

@@ -32,11 +32,9 @@ public class Message {
 
     private Boolean read;
     private Date readDate;
-    private Long messageBoxId;
 
     @CreatedDate
     @Column(nullable = false)
     private Date createdDate;
-
 
 }
