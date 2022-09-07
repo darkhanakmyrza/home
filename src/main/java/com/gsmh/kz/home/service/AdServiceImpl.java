@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Date;
 import java.util.List;
 
 import static com.gsmh.kz.home.constants.ServiceConstants.ADS_NOT_FOUND;
@@ -38,7 +39,6 @@ public class AdServiceImpl implements AdService {
       adsDto.getFloorsCount(),
       adsDto.getConstructionYear(),
       adsDto.getPrice(),
-      user,
       adsDto.getIsPledged(),
       adsDto.getBalcony(),
       adsDto.getIsBalconyGlazed(),
@@ -53,6 +53,8 @@ public class AdServiceImpl implements AdService {
       adsDto.getCity(),
       AdModeratorStatusEnum.MODERATE
     );
+//    ads.setCreatedDate(new Date());
+    ads.setUpdatedDate(new Date());
     return adRepository.save(ads);
   }
 
@@ -67,14 +69,14 @@ public class AdServiceImpl implements AdService {
   public void deleteAd(Long id) {
     Ad ad = adRepository.findById(id).orElseThrow(
       () -> new ResponseStatusException(HttpStatus.NOT_FOUND, ADS_NOT_FOUND));
-    if (!ad.getUser().equals(securityService.getCurrentUser()))
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+//    if (!ad.getUser().equals(securityService.getCurrentUser()))
+//      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     adRepository.deleteById(id);
   }
 
   @Override
   public List<Ad> getAdsByUser(Long userId) {
-    return adRepository.findByUserId(userId);
+    return adRepository.findByCreatedBy(userId);
   }
 
   @Override
