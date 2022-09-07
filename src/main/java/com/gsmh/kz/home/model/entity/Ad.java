@@ -88,9 +88,10 @@ public class Ad {
 
   private AdModeratorStatusEnum moderatorStatus;
 
-  public Ad(String description, int roomsCount, int houseNumber,
-            int floor, int floorsCount, int creationYear, int price, User user
-  ) {
+  public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price,
+            User user, Boolean isPledged, String balcony, Boolean isBalconyGlazed,
+            String furniture, String ceilingHeight, String safety, Boolean exchange, Long payment, Long rassrochkaPrice,
+            String propertyType, String region, String city, AdModeratorStatusEnum moderatorStatus) {
     this.description = description;
     this.roomsCount = roomsCount;
     this.houseNumber = houseNumber;
@@ -99,5 +100,18 @@ public class Ad {
     this.creationYear = creationYear;
     this.price = price;
     this.user = user;
+    this.isPledged = isPledged;
+    this.balcony = balcony;
+    this.isBalconyGlazed = isBalconyGlazed;
+    this.furniture = furniture;
+    this.ceilingHeight = ceilingHeight;
+    this.safety = safety;
+    this.exchange = exchange;
+    this.payment = payment;
+    this.rassrochkaPrice = rassrochkaPrice;
+    this.propertyType = propertyType;
+    this.region = region;
+    this.city = city;
+    this.moderatorStatus = moderatorStatus;
   }
 }
