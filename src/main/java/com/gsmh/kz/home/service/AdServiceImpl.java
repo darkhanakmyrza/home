@@ -53,8 +53,6 @@ public class AdServiceImpl implements AdService {
       adsDto.getCity(),
       AdModeratorStatusEnum.MODERATE
     );
-//    ads.setCreatedDate(new Date());
-    ads.setUpdatedDate(new Date());
     return adRepository.save(ads);
   }
 
