@@ -21,13 +21,13 @@ public class ChatController {
     private MessageService messageService;
 
 //    @GetMapping("/myChat")
-//    public ResponseEntity<MessageBox> getMessageBox(){
-//
+//    public ResponseEntity<Message> getMessageBox(){
+////        chatService
 //    }
 
     @GetMapping("/chat")
-    public ResponseEntity<List<Message>> getMessages(@PathVariable RequestMessageDto requestMessageDto){
-        return ResponseEntity.ok(chatService.getMessages(requestMessageDto.getToUserId(), requestMessageDto.getAdsId() ));
+    public ResponseEntity<List<Message>> getMessages(@RequestBody RequestMessageDto requestMessageDto){
+        return ResponseEntity.ok(chatService.getMessages(requestMessageDto.getToUserId(), requestMessageDto.getAdsId()));
     }
 
     @PostMapping("/sendMessage")

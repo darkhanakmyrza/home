@@ -14,7 +14,6 @@ public class AdsDto {
   private int floorsCount;
   private int constructionYear;
   private int price;
-  private Long userId;
   private Boolean isPledged;
   private String balcony;
   private Boolean isBalconyGlazed;

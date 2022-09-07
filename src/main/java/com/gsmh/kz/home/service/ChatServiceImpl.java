@@ -25,4 +25,8 @@ public class ChatServiceImpl implements ChatService{
     public List<Message> getMessages(Long toUserId, Long adsId){
         return messageService.getMessagesByToUsersAndAdsId(securityService.getCurrentUser().getId(), toUserId, adsId);
     }
+
+//    public List<Message> getChatByUser(){
+//
+//    }
 }
