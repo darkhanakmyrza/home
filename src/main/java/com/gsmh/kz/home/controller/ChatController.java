@@ -25,7 +25,7 @@ public class ChatController {
 ////        chatService
 //    }
 
-    @GetMapping("/chat")
+    @GetMapping()
     public ResponseEntity<List<Message>> getMessages(@RequestBody RequestMessageDto requestMessageDto){
         return ResponseEntity.ok(chatService.getMessages(requestMessageDto.getToUserId(), requestMessageDto.getAdsId()));
     }

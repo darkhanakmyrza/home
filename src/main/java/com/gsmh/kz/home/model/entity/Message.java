@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Message {
+public class Message extends Audit{
 
     @Id
     @Column(name = "id")
@@ -32,9 +32,5 @@ public class Message {
 
     private Boolean read;
     private Date readDate;
-
-    @CreatedDate
-    @Column(nullable = false)
-    private Date createdDate;
 
 }

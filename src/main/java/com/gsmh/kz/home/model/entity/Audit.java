@@ -17,7 +17,6 @@ import java.util.Date;
 public class Audit {
 
   @CreatedDate
-  @Temporal(TemporalType.DATE)
   @Column(name = "created_date", nullable = false, updatable = false)
   private Date createdDate;
 
