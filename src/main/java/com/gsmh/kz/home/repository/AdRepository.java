@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AdRepository extends JpaRepository<Ad, Long> {
-  List<Ad> findByUserId(Long id);
+  List<Ad> findByCreatedBy(Long id);
 
   @Query(value = "select * from ads order by created_date desc offset :offset limit :limit", nativeQuery = true)
   List<Ad> filterAd(Integer limit, Integer offset);

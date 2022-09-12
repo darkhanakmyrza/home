@@ -1,17 +1,12 @@
 package com.gsmh.kz.home.model.entity;
 
 import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
-import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import net.minidev.json.annotate.JsonIgnore;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "ads")
@@ -19,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Setter
 @Getter
-public class Ad {
+public class Ad extends Audit {
   @Id
   @Column(name = "id")
   @SequenceGenerator(name = "adsIdSeq", sequenceName = "ads_id_seq", allocationSize = 1)
@@ -47,21 +42,6 @@ public class Ad {
   @Column(name = "price")
   private int price;
 
-  @CreatedDate
-  @Column(nullable = false)
-  private Date createdDate;
-
-  @JsonIgnore
-  @LastModifiedDate
-  @Column(nullable = false)
-  private Date updatedDate;
-
-  @JsonIgnore
-  @NotNull
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id")
-  private User user;
-
   private Boolean isPledged;
 
   private String balcony;
@@ -88,9 +68,10 @@ public class Ad {
 
   private AdModeratorStatusEnum moderatorStatus;
 
-  public Ad(String description, int roomsCount, int houseNumber,
-            int floor, int floorsCount, int creationYear, int price, User user
-  ) {
+  public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price,
+            Boolean isPledged, String balcony, Boolean isBalconyGlazed,
+            String furniture, String ceilingHeight, String safety, Boolean exchange, Long payment, Long rassrochkaPrice,
+            String propertyType, String region, String city, AdModeratorStatusEnum moderatorStatus) {
     this.description = description;
     this.roomsCount = roomsCount;
     this.houseNumber = houseNumber;
@@ -98,6 +79,18 @@ public class Ad {
     this.floorsCount = floorsCount;
     this.creationYear = creationYear;
     this.price = price;
-    this.user = user;
+    this.isPledged = isPledged;
+    this.balcony = balcony;
+    this.isBalconyGlazed = isBalconyGlazed;
+    this.furniture = furniture;
+    this.ceilingHeight = ceilingHeight;
+    this.safety = safety;
+    this.exchange = exchange;
+    this.payment = payment;
+    this.rassrochkaPrice = rassrochkaPrice;
+    this.propertyType = propertyType;
+    this.region = region;
+    this.city = city;
+    this.moderatorStatus = moderatorStatus;
   }
 }
