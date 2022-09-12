@@ -17,22 +17,22 @@ import java.util.List;
 @AllArgsConstructor
 public class ChatController {
 
-    private ChatService chatService;
-    private MessageService messageService;
+  private ChatService chatService;
+  private MessageService messageService;
 
 //    @GetMapping("/myChat")
 //    public ResponseEntity<Message> getMessageBox(){
 ////        chatService
 //    }
 
-    @GetMapping()
-    public ResponseEntity<List<Message>> getMessages(@RequestBody RequestMessageDto requestMessageDto){
-        return ResponseEntity.ok(chatService.getMessages(requestMessageDto.getToUserId(), requestMessageDto.getAdsId()));
-    }
+  @GetMapping()
+  public ResponseEntity<List<Message>> getMessages(@RequestBody RequestMessageDto requestMessageDto) {
+    return ResponseEntity.ok(chatService.getMessages(requestMessageDto.getToUserId(), requestMessageDto.getAdsId()));
+  }
 
-    @PostMapping("/sendMessage")
-    public ResponseEntity<Void> sendMessage(@RequestBody RequestMessageDto requestMessageDto){
-        chatService.sendMessage(requestMessageDto);
-        return ResponseEntity.ok().build();
-    }
+  @PostMapping("/sendMessage")
+  public ResponseEntity<Void> sendMessage(@RequestBody RequestMessageDto requestMessageDto) {
+    chatService.sendMessage(requestMessageDto);
+    return ResponseEntity.ok().build();
+  }
 }
