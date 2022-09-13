@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#mvn clean install
+mvn clean install
 
 echo 'Copy files...'
 scp -i ~/.ssh/key \
