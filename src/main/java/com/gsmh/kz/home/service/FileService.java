@@ -41,7 +41,8 @@ public class FileService {
   }
 
   private String storeFile(MultipartFile file, String folder) {
-    String filename = UUID.randomUUID().toString();
+    String filename = UUID.randomUUID().toString() + ".webp";
+
     Path fileStorageLocation = Paths.get(uploadDir + "/" + folder).toAbsolutePath().normalize();
     try {
       try {
