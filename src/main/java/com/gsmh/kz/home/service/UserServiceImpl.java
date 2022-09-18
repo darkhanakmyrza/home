@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         new UsernamePasswordAuthenticationToken(loginRequest.getPhone(), loginRequest.getPassword()));
 
     SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication);
+    String jwt = jwtUtils.generateJwtToken(authentication, getByPhone(loginRequest.getPhone()).getId());
 
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
     List<String> roles = userDetails.getAuthorities().stream()

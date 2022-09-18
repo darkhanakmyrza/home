@@ -1,14 +1,18 @@
 package com.gsmh.kz.home.config.security.jwt;
 
+import com.gsmh.kz.home.model.entity.User;
+import com.gsmh.kz.home.service.UserService;
 import com.gsmh.kz.home.service.security.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.gsmh.kz.home.constants.JWTConstants.*;
 
@@ -22,11 +26,18 @@ public class JwtUtils {
   @Value("${home.app.jwtExpirationMs}")
   private int jwtExpirationMs;
 
-  public String generateJwtToken(Authentication authentication) {
+  public String generateJwtToken(Authentication authentication, Long id) {
 
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
-    return Jwts.builder().setSubject((userPrincipal.username())).setIssuedAt(new Date())
+    HashMap<String, Object> map = new HashMap<>();
+    map.put("id", id);
+    map.put("username", userPrincipal.getUsername());
+
+    return Jwts.builder()
+        .setClaims(map)
+        .setSubject((userPrincipal.username()))
+        .setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)
         .compact();
   }
