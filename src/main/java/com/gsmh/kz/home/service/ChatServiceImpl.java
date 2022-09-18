@@ -23,28 +23,16 @@ public class ChatServiceImpl implements ChatService {
   @Override
   public void sendMessage(RequestMessageDto requestMessageDto) {
     User currentUser = securityService.getCurrentUser();
-    Long messageBoxId = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId());
-    MessageBox messageBox = null;
-    if (messageBoxId == null) {
+    MessageBox messageBox = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId());
+    if (messageBox == null) {
       messageBox = messageBoxService.createMessageBox(currentUser.getId(), requestMessageDto.getToUserId());
-    } else {
-      messageBox = messageBoxService.getById(messageBoxId);
     }
-    System.out.println("saved messageBox");
     Message message = messageService.createMessage(requestMessageDto, currentUser.getId());
-    System.out.println("saved message");
-    messageBox.setText(requestMessageDto.getText());
-    messageBoxRepository.save(messageBox);
-//    messageBoxService.saveMessageBox(messageBox, requestMessageDto, currentUser, message.getId());
-    System.out.println("saved updated messageBox");
-
+    messageBoxService.saveMessageBox(messageBox, requestMessageDto, currentUser, message.getId());
   }
 
   public List<Message> getMessages(Long toUserId, Long adsId) {
     return messageService.getMessagesByToUsersAndAdsId(securityService.getCurrentUser().getId(), toUserId, adsId);
   }
 
-//    public List<Message> getChatByUser(){
-//
-//    }
 }

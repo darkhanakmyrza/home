@@ -32,7 +32,7 @@ public class MessageBoxService {
     return messageBoxRepository.save(messageBox);
   }
 
-  public Long findMessageBoxIfExits(Long fromUserId, Long toUserId){
+  public MessageBox findMessageBoxIfExits(Long fromUserId, Long toUserId){
     return messageBoxRepository.findMessageBoxIfExits(fromUserId, toUserId);
   }
 
