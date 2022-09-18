@@ -18,32 +18,6 @@ import java.util.List;
 public class UserController {
   private final UserService userService;
 
-  @GetMapping
-  public List<User> getAllUsers() {
-    return userService.getAllUsers();
-  }
-
-  @GetMapping("/{id}")
-  public User getUser(@PathVariable Long id) {
-    return userService.getUser(id);
-  }
-
-  @PostMapping
-  public User addNewUser(@RequestBody UserDto userDto) {
-    return userService.saveUser(userDto);
-  }
-
-  @PutMapping
-  public User updateUser(@RequestBody UserDto userDto) {
-    return userService.saveUser(userDto);
-  }
-
-  @DeleteMapping("/{id}")
-  public String deleteEmployee(@PathVariable Long id) {
-    userService.deleteUser(id);
-    return "User with id " + id + " was deleted";
-  }
-
   @PostMapping("/register")
   public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
     return userService.registerUser(signUpRequest);
