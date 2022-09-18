@@ -86,6 +86,7 @@ public class Ad extends Audit {
   @Column(name = "photos", columnDefinition = "text[]")
   private String[] photos;
 
+  @Enumerated(EnumType.STRING)
   private AdModeratorStatusEnum moderatorStatus;
 
   public Ad(String description, int roomsCount, int houseNumber, int floor, int floorsCount, int creationYear, int price,
