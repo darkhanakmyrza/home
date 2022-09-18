@@ -15,6 +15,6 @@ public class AuditorAwareImpl implements AuditorAware<Long> {
 
   @Override
   public Optional<Long> getCurrentAuditor() {
-    return Optional.of(securityService.getCurrentUser().getId());
+    return Optional.of(securityService.getCurrentUserId());
   }
 }

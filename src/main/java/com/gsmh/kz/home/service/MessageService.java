@@ -21,12 +21,14 @@ public class MessageService {
     message.setFromUserId(fromUserId);
     message.setToUserId(requestMessageDto.getToUserId());
     message.setRead(false);
+    message.setText(requestMessageDto.getText());
     return messageRepository.save(message);
   }
 
   public List<Message> getMessagesByToUsersAndAdsId(Long fromUserId, Long toUserId, Long adsId) {
     return messageRepository.getMessageBoxByUsers(fromUserId, toUserId, adsId);
   }
+
 
 
 }

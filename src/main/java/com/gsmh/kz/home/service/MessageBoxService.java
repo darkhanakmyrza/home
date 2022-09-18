@@ -1,0 +1,47 @@
+package com.gsmh.kz.home.service;
+
+import com.gsmh.kz.home.model.dto.RequestMessageDto;
+import com.gsmh.kz.home.model.entity.Message;
+import com.gsmh.kz.home.model.entity.MessageBox;
+import com.gsmh.kz.home.model.entity.User;
+import com.gsmh.kz.home.repository.MessageBoxRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@AllArgsConstructor
+public class MessageBoxService {
+
+  private MessageBoxRepository messageBoxRepository;
+
+  public MessageBox saveMessageBox(MessageBox messageBox, RequestMessageDto requestMessageDto, User currentUser, Long lastMessageId){
+    messageBox.setText(requestMessageDto.getText());
+    messageBox.setAdsId(requestMessageDto.getAdsId());
+    messageBox.setLastMessageId(lastMessageId);
+    messageBox.setFromUserId(currentUser.getId());
+    messageBox.setToUserId(requestMessageDto.getToUserId());
+    return messageBoxRepository.save(messageBox);
+  }
+
+  public MessageBox createMessageBox(Long fromUserId, Long toUserId){
+    MessageBox messageBox = new MessageBox();
+    messageBox.setFromUserId(fromUserId);
+    messageBox.setToUserId(toUserId);
+    return messageBoxRepository.save(messageBox);
+  }
+
+  public Long findMessageBoxIfExits(Long fromUserId, Long toUserId){
+    return messageBoxRepository.findMessageBoxIfExits(fromUserId, toUserId);
+  }
+
+  public List<MessageBox> findMessageBoxByUserId(Long userId){
+    return messageBoxRepository.findMessageBoxByUserId(userId);
+  }
+
+  public MessageBox getById(Long id){
+    return messageBoxRepository.findById(id).orElseThrow(null);
+  }
+
+}

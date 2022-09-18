@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
 import java.util.List;
 
 import static com.gsmh.kz.home.constants.ServiceConstants.ADS_NOT_FOUND;

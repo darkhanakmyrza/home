@@ -1,6 +1,8 @@
 package com.gsmh.kz.home.config.security.jwt;
 
 import com.gsmh.kz.home.service.security.UserDetailsServiceImpl;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
