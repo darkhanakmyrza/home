@@ -26,4 +26,5 @@ public class AdsDto {
   private String propertyType;
   private String region;
   private String city;
+  private String[] photos;
 }

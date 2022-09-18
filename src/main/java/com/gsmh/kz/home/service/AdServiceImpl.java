@@ -51,7 +51,8 @@ public class AdServiceImpl implements AdService {
         adsDto.getPropertyType(),
         adsDto.getRegion(),
         adsDto.getCity(),
-        AdModeratorStatusEnum.MODERATE
+        AdModeratorStatusEnum.MODERATE,
+        adsDto.getPhotos()
     );
     return adRepository.save(ads);
   }
