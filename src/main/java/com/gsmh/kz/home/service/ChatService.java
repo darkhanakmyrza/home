@@ -2,11 +2,13 @@ package com.gsmh.kz.home.service;
 
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
 import com.gsmh.kz.home.model.entity.Message;
+import com.gsmh.kz.home.model.entity.MessageBox;
 
 import java.util.List;
 
 public interface ChatService {
 
-    public void sendMessage(RequestMessageDto requestMessageDto);
-    public List<Message> getMessages(Long toUserId, Long adsId);
+    void sendMessage(RequestMessageDto requestMessageDto);
+    List<Message> getMessages(Long toUserId, Long adsId);
+    List<MessageBox> getChats();
 }

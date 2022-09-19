@@ -31,8 +31,16 @@ public class ChatServiceImpl implements ChatService {
     messageBoxService.saveMessageBox(messageBox, requestMessageDto, currentUser, message.getId());
   }
 
+  @Override
   public List<Message> getMessages(Long toUserId, Long adsId) {
     return messageService.getMessagesByToUsersAndAdsId(securityService.getCurrentUser().getId(), toUserId, adsId);
+  }
+
+  @Override
+  public List<MessageBox> getChats(){
+    Long currentUserId = securityService.getCurrentUserId();
+    List<MessageBox> messageBoxes = messageBoxService.findMessageBoxesByUserId(currentUserId);
+    return messageBoxes;
   }
 
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface MessageBoxRepository extends JpaRepository<MessageBox, Long> {
 
-  @Query(value = "select id from messages_box where (from_user_id = :fromUserId and to_user_id = :toUserId) or " +
+  @Query(value = "select * from messages_box where (from_user_id = :fromUserId and to_user_id = :toUserId) or " +
       "(from_user_id = :toUserId and to_user_id = :fromUserId)", nativeQuery = true)
   public MessageBox findMessageBoxIfExits(Long fromUserId, Long toUserId);
 

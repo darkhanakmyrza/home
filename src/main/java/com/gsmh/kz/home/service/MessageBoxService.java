@@ -36,7 +36,7 @@ public class MessageBoxService {
     return messageBoxRepository.findMessageBoxIfExits(fromUserId, toUserId);
   }
 
-  public List<MessageBox> findMessageBoxByUserId(Long userId){
+  public List<MessageBox> findMessageBoxesByUserId(Long userId){
     return messageBoxRepository.findMessageBoxByUserId(userId);
   }
 

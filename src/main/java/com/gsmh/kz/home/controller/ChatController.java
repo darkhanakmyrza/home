@@ -2,6 +2,7 @@ package com.gsmh.kz.home.controller;
 
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
 import com.gsmh.kz.home.model.entity.Message;
+import com.gsmh.kz.home.model.entity.MessageBox;
 import com.gsmh.kz.home.service.ChatService;
 import com.gsmh.kz.home.service.MessageService;
 import lombok.AllArgsConstructor;
@@ -20,10 +21,10 @@ public class ChatController {
   private ChatService chatService;
   private MessageService messageService;
 
-//    @GetMapping("/myChat")
-//    public ResponseEntity<Message> getMessageBox(){
-////        chatService
-//    }
+    @GetMapping("/myChat")
+    public ResponseEntity<List<MessageBox>> getMessageBox(){
+        return ResponseEntity.ok(chatService.getChats());
+    }
 
   @PostMapping("/user")
   public ResponseEntity<List<Message>> getMessages(@RequestBody RequestMessageDto requestMessageDto) {
