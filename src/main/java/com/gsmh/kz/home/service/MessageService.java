@@ -3,6 +3,7 @@ package com.gsmh.kz.home.service;
 import com.gsmh.kz.home.model.dto.MessageResponse;
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
 import com.gsmh.kz.home.model.entity.Message;
+import com.gsmh.kz.home.model.entity.MessageBox;
 import com.gsmh.kz.home.repository.MessageRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class MessageService {
 
   public List<Message> getMessagesByToUsersAndAdsId(Long fromUserId, Long toUserId, Long adsId) {
     return messageRepository.getMessageBoxByUsers(fromUserId, toUserId, adsId);
+  }
+
+  public Message getById(Long id){
+    return messageRepository.findById(id).orElse(null);
   }
 
 

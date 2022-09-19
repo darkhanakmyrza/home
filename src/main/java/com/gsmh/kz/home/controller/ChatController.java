@@ -1,5 +1,6 @@
 package com.gsmh.kz.home.controller;
 
+import com.gsmh.kz.home.model.dto.ChatDto;
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
 import com.gsmh.kz.home.model.entity.Message;
 import com.gsmh.kz.home.model.entity.MessageBox;
@@ -21,10 +22,10 @@ public class ChatController {
   private ChatService chatService;
   private MessageService messageService;
 
-    @GetMapping("/myChat")
-    public ResponseEntity<List<MessageBox>> getMessageBox(){
-        return ResponseEntity.ok(chatService.getChats());
-    }
+  @GetMapping("/myChat")
+  public ResponseEntity<List<ChatDto>> getMessageBox() {
+    return ResponseEntity.ok(chatService.getChats());
+  }
 
   @PostMapping("/user")
   public ResponseEntity<List<Message>> getMessages(@RequestBody RequestMessageDto requestMessageDto) {

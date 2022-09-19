@@ -1,5 +1,6 @@
 package com.gsmh.kz.home.service;
 
+import com.gsmh.kz.home.model.dto.ChatDto;
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
 import com.gsmh.kz.home.model.entity.Message;
 import com.gsmh.kz.home.model.entity.MessageBox;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +21,7 @@ public class ChatServiceImpl implements ChatService {
   private MessageService messageService;
   private MessageBoxService messageBoxService;
   private MessageBoxRepository messageBoxRepository;
+  private UserService userService;
 
   @Override
   public void sendMessage(RequestMessageDto requestMessageDto) {
@@ -37,10 +40,18 @@ public class ChatServiceImpl implements ChatService {
   }
 
   @Override
-  public List<MessageBox> getChats(){
+  public List<ChatDto> getChats() {
     Long currentUserId = securityService.getCurrentUserId();
     List<MessageBox> messageBoxes = messageBoxService.findMessageBoxesByUserId(currentUserId);
-    return messageBoxes;
+    return messageBoxes.stream().map(it -> messageBoxToChatDto(it, currentUserId)).toList();
+  }
+
+  private ChatDto messageBoxToChatDto(MessageBox messageBox, Long currentUserId) {
+    User secondUser = userService.getUser(currentUserId.equals(messageBox.getToUserId()) ? messageBox.getFromUserId() : messageBox.getToUserId());
+    Boolean amISender = messageBox.getFromUserId().equals(currentUserId);
+    Message lastMessage = messageService.getById(messageBox.getLastMessageId());
+    String status = amISender ? "Отправлено" : (messageBox.getRead()) ? "Сообщение" : "Новое сообщение";
+    return new ChatDto(messageBox.getId(), secondUser.getName(), secondUser.getId(), status, messageBox.getUpdatedDate(), lastMessage.getText(), lastMessage, secondUser.getAvatarUrl());
   }
 
 }
