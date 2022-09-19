@@ -23,7 +23,7 @@ public class ChatServiceImpl implements ChatService {
   @Override
   public void sendMessage(RequestMessageDto requestMessageDto) {
     User currentUser = securityService.getCurrentUser();
-    MessageBox messageBox = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId());
+    MessageBox messageBox = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId() ,requestMessageDto.getAdsId());
     if (messageBox == null) {
       messageBox = messageBoxService.createMessageBox(currentUser.getId(), requestMessageDto.getToUserId());
     }
