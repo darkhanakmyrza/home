@@ -31,6 +31,10 @@ public record UserDetailsImpl(Long id, String username, String email,
         authorities);
   }
 
+  public Long getId(){
+    return id;
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities;

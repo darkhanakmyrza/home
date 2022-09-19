@@ -1,7 +1,9 @@
 package com.gsmh.kz.home.controller;
 
+import com.gsmh.kz.home.model.dto.ChatDto;
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
 import com.gsmh.kz.home.model.entity.Message;
+import com.gsmh.kz.home.model.entity.MessageBox;
 import com.gsmh.kz.home.service.ChatService;
 import com.gsmh.kz.home.service.MessageService;
 import lombok.AllArgsConstructor;
@@ -20,12 +22,12 @@ public class ChatController {
   private ChatService chatService;
   private MessageService messageService;
 
-//    @GetMapping("/myChat")
-//    public ResponseEntity<Message> getMessageBox(){
-////        chatService
-//    }
+  @GetMapping("/myChat")
+  public ResponseEntity<List<ChatDto>> getMessageBox() {
+    return ResponseEntity.ok(chatService.getChats());
+  }
 
-  @GetMapping()
+  @PostMapping("/user")
   public ResponseEntity<List<Message>> getMessages(@RequestBody RequestMessageDto requestMessageDto) {
     return ResponseEntity.ok(chatService.getMessages(requestMessageDto.getToUserId(), requestMessageDto.getAdsId()));
   }

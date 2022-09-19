@@ -24,7 +24,7 @@ public class Message extends Audit{
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "messagesIdSeq")
     private Long id;
 
-
+    private String text;
     private Long adsId;
 
     private Long fromUserId;
