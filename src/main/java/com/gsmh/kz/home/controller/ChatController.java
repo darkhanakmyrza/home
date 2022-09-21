@@ -17,6 +17,7 @@ import java.util.List;
 @RequestMapping("/chat")
 @PreAuthorize("isAuthenticated()")
 @AllArgsConstructor
+@CrossOrigin
 public class ChatController {
 
   private ChatService chatService;
