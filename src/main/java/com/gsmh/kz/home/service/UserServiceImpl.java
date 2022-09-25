@@ -139,7 +139,8 @@ public class UserServiceImpl implements UserService {
     VerificationCode verificationCode = new VerificationCode();
     verificationCode.setPhone(phone);
     verificationCode.setCode(verificationCodeService.getVerificationCodeRandomString());
-    smsService.sendSmsVerification(phone, verificationCode.getCode());
+    verificationCodeRepository.save(verificationCode);
+    smsService.sendSmsVerification(phone, verificationCode.getCode() + " код подтверждения GSMH");
     return new Response(null, "SUCCESS", "СМС успешнело отправлен");
   }
 

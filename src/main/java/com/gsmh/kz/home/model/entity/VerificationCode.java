@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class VerificationCode extends Audit{
+public class VerificationCode extends TimeBaseEntity{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -22,7 +22,10 @@ public class SecurityService {
 
   public Long getCurrentUserId() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    return ((UserDetailsImpl) authentication.getPrincipal()).getId();
+    if (authentication.getPrincipal() instanceof UserDetailsImpl) {
+      return ((UserDetailsImpl) authentication.getPrincipal()).getId();
+    }
+    return 0L;
   }
 }
 

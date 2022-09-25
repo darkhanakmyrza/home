@@ -14,7 +14,7 @@ public class VerificationCodeService {
 
     public String getVerificationCodeRandomString(){
         Random random = new Random();
-        int number = random.nextInt(9999);
-        return String.format("%06d", number);
+        int number = random.nextInt(10000);
+        return String.format("%04d", number);
     }
 }

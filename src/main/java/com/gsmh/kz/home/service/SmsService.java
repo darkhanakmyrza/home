@@ -25,7 +25,7 @@ public class SmsService {
 
 
     public void sendSmsVerification(String phone, String message) {
-        String link = smsProviderLink + "?login=" + smsProviderLogin + "&psw=" + smsProviderPassword + "&phones=" + phone + "&mes=" + "message";
+        String link = smsProviderLink + "?login=" + smsProviderLogin + "&psw=" + smsProviderPassword + "&phones=" + phone + "&mes=" + message;
         String response = resTemplateService.getObject(link);
         logger.info("verification sms phone: " + phone + ", reponse : " + response);
     }
