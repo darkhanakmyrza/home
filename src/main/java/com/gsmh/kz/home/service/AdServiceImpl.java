@@ -29,7 +29,6 @@ public class AdServiceImpl implements AdService {
 
   @Override
   public Ad saveAd(AdsDto adsDto) {
-    User user = securityService.getCurrentUser();
     Ad ads = new Ad(
         adsDto.getDescription(),
         adsDto.getRoomsCount(),
@@ -79,8 +78,8 @@ public class AdServiceImpl implements AdService {
 
   @Override
   public List<Ad> getMyAds() {
-    User user = securityService.getCurrentUser();
-    return getAdsByUser(user.getId());
+    Long userId = securityService.getCurrentUserId();
+    return getAdsByUser(userId);
   }
 
   public AdsResponse filterAds(Integer limit, Integer offset) {

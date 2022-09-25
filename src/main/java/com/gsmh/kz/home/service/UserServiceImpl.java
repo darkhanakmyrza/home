@@ -4,9 +4,11 @@ import com.gsmh.kz.home.config.security.jwt.JwtUtils;
 import com.gsmh.kz.home.model.dto.*;
 import com.gsmh.kz.home.model.entity.Role;
 import com.gsmh.kz.home.model.entity.User;
+import com.gsmh.kz.home.model.entity.VerificationCode;
 import com.gsmh.kz.home.model.enumers.ERole;
 import com.gsmh.kz.home.repository.RoleRepository;
 import com.gsmh.kz.home.repository.UserRepository;
+import com.gsmh.kz.home.repository.VerificationCodeRepository;
 import com.gsmh.kz.home.service.security.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
@@ -38,6 +41,9 @@ public class UserServiceImpl implements UserService {
   private PasswordEncoder encoder;
   private AuthenticationManager authenticationManager;
   private JwtUtils jwtUtils;
+  private VerificationCodeRepository verificationCodeRepository;
+  private VerificationCodeService verificationCodeService;
+  private SmsService smsService;
   private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
   @Override
@@ -89,18 +95,19 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
+
+    if (signUpRequest.getCode() == null || verificationCodeRepository.getByPhoneAndCode(signUpRequest.getPhone(), signUpRequest.getCode()) == null){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "неправильный код");
+    }
+
     if (userRepository.existsByUsername(signUpRequest.getPhone())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, USER_NAME_ALREADY_TAKEN);
     }
 
-    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, EMAIL_ALREADY_USED);
-    }
 
     // Create new user's account
     User user = new User();
     user.setPhone(signUpRequest.getPhone());
-    user.setEmail(signUpRequest.getEmail());
     user.setPassword(encoder.encode(signUpRequest.getPassword()));
 
     Set<Role> roles = new HashSet<>();
@@ -119,4 +126,21 @@ public class UserServiceImpl implements UserService {
         .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_NAME + phone));
     return user;
   }
+
+  @Override
+  public Boolean isUserExists(String phone) {
+    return userRepository.existsByUsername(phone);
+  }
+
+  public Response sendVerificationCode(String phone){
+    if (verificationCodeRepository.alreadySend(phone) != null){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "СМС уже отправлен");
+    }
+    VerificationCode verificationCode = new VerificationCode();
+    verificationCode.setPhone(phone);
+    verificationCode.setCode(verificationCodeService.getVerificationCodeRandomString());
+    smsService.sendSmsVerification(phone, verificationCode.getCode());
+    return new Response(null, "SUCCESS", "СМС успешнело отправлен");
+  }
+
 }

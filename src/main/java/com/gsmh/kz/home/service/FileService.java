@@ -1,6 +1,5 @@
 package com.gsmh.kz.home.service;
 
-import com.gsmh.kz.home.config.security.jwt.AuthTokenFilter;
 import com.gsmh.kz.home.exception.FileStorageException;
 import com.gsmh.kz.home.model.dto.FileResponse;
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;

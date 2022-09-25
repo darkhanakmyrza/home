@@ -22,7 +22,8 @@ public class ChatServiceImpl implements ChatService {
 
   @Override
   public void sendMessage(RequestMessageDto requestMessageDto) {
-    User currentUser = securityService.getCurrentUser();
+    Long userId = securityService.getCurrentUserId();
+    User currentUser = userService.getUser(userId);
     MessageBox messageBox = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId() ,requestMessageDto.getAdsId());
     if (messageBox == null) {
       messageBox = messageBoxService.createMessageBox(currentUser.getId(), requestMessageDto.getToUserId());
@@ -33,7 +34,7 @@ public class ChatServiceImpl implements ChatService {
 
   @Override
   public List<Message> getMessages(Long toUserId, Long adsId) {
-    return messageService.getMessagesByToUsersAndAdsId(securityService.getCurrentUser().getId(), toUserId, adsId);
+    return messageService.getMessagesByToUsersAndAdsId(securityService.getCurrentUserId(), toUserId, adsId);
   }
 
   @Override
