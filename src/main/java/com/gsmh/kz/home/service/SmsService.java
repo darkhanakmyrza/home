@@ -12,10 +12,6 @@ import java.util.HashMap;
 @Component
 public class SmsService {
     private static final Logger logger = LoggerFactory.getLogger(SmsService.class);
-
-    @Autowired
-    private ResTemplateService resTemplateService;
-
     @Value("${sms.provider.login}")
     private String smsProviderLogin;
 
@@ -24,11 +20,13 @@ public class SmsService {
 
     @Value("${sms.provider.link}")
     private String smsProviderLink;
+    @Autowired
+    private ResTemplateService resTemplateService;
+
 
     public void sendSmsVerification(String phone, String message) {
-        String link = smsProviderLink + "?login=" + smsProviderLogin + "&psw=" + smsProviderPassword + "&phones=" + phone + "&mes=" + message;
-        logger.info(link);
-        String response = resTemplateService.sendSms(smsProviderLink);
+        String link = smsProviderLink + "?login=" + smsProviderLogin + "&psw=" + smsProviderPassword + "&phones=" + phone + "&mes=" + "message";
+        String response = resTemplateService.getObject(link);
         logger.info("verification sms phone: " + phone + ", reponse : " + response);
     }
 }
