@@ -95,6 +95,7 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
+    if (signUpRequest.getPassword().length() <6) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пароль должен быть не менее 6 символов");
 
     if (signUpRequest.getCode() == null || verificationCodeRepository.getByPhoneAndCode(signUpRequest.getPhone(), signUpRequest.getCode()) == null){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "неправильный код");
