@@ -57,9 +57,10 @@ public class User {
   private Set<Role> roles = new HashSet<>();
 
   public UserDto getUserDto(){
+
     return new UserDto(
         this.getId(), this.getFirstName(), this.getLastName(),
-        this.getAvatarUrl(), this.getEmail(), this.getPhone()
+        this.getAvatarUrl(), this.getEmail(), this.getPhone(), null
     );
   }
 }
