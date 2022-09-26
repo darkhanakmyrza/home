@@ -1,24 +1,22 @@
 package com.gsmh.kz.home.model.dto;
 
 
-import com.gsmh.kz.home.model.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
   private Long id;
-  private String name;
+  private String firstName;
+  private String lastName;
+  private String avatarUrl;
   private String email;
   private String phone;
+  private String code;
 
-  public User toEntity() {
-    User user = new User();
-    user.setName(name);
-    user.setPhone(phone);
-    user.setEmail(email);
-    user.setActive(true);
-    return user;
-  }
 }

@@ -9,6 +9,7 @@ import com.gsmh.kz.home.model.enumers.ERole;
 import com.gsmh.kz.home.repository.RoleRepository;
 import com.gsmh.kz.home.repository.UserRepository;
 import com.gsmh.kz.home.repository.VerificationCodeRepository;
+import com.gsmh.kz.home.service.security.SecurityService;
 import com.gsmh.kz.home.service.security.UserDetailsImpl;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -36,113 +37,124 @@ import static com.gsmh.kz.home.constants.ServiceConstants.*;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-  private UserRepository userRepository;
-  private RoleRepository roleRepository;
-  private PasswordEncoder encoder;
-  private AuthenticationManager authenticationManager;
-  private JwtUtils jwtUtils;
-  private VerificationCodeRepository verificationCodeRepository;
-  private VerificationCodeService verificationCodeService;
-  private SmsService smsService;
-  private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private UserRepository userRepository;
+    private RoleRepository roleRepository;
+    private PasswordEncoder encoder;
+    private AuthenticationManager authenticationManager;
+    private JwtUtils jwtUtils;
+    private VerificationCodeRepository verificationCodeRepository;
+    private VerificationCodeService verificationCodeService;
+    private SmsService smsService;
+    private SecurityService securityService;
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
-  @Override
-  public List<User> getAllUsers() {
-    return userRepository.findAll();
-  }
 
-  @Override
-  public User saveUser(UserDto userDto) {
-    return userRepository.save(userDto.toEntity());
-  }
-
-  @Override
-  public User updateUser(UserDto userDto) {
-    return userRepository.save(userDto.toEntity());
-  }
-
-  @Override
-  public User getUser(Long id) {
-    User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    return user;
-  }
-
-  @Override
-  public void deleteUser(Long id) {
-    User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-    userRepository.delete(user);
-  }
-
-  @Override
-  public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
-    Authentication authentication = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequest.getPhone(), loginRequest.getPassword()));
-
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-    String jwt = jwtUtils.generateJwtToken(authentication, getByPhone(loginRequest.getPhone()).getId());
-
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    List<String> roles = userDetails.getAuthorities().stream()
-        .map(GrantedAuthority::getAuthority)
-        .collect(Collectors.toList());
-
-    return ResponseEntity.ok(new JwtResponse(jwt,
-        userDetails.id(),
-        userDetails.username(),
-        userDetails.email(),
-        roles));
-  }
-
-  @Override
-  public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
-    if (signUpRequest.getPassword().length() <6) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пароль должен быть не менее 6 символов");
-
-    if (signUpRequest.getCode() == null || verificationCodeRepository.getByPhoneAndCode(signUpRequest.getPhone(), signUpRequest.getCode()) == null){
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "неправильный код");
-    }
-
-    if (userRepository.existsByUsername(signUpRequest.getPhone())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, USER_NAME_ALREADY_TAKEN);
+    @Override
+    public User getUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        return user;
     }
 
 
-    // Create new user's account
-    User user = new User();
-    user.setPhone(signUpRequest.getPhone());
-    user.setPassword(encoder.encode(signUpRequest.getPassword()));
+    @Override
+    public ResponseEntity<?> authenticateUser(LoginRequest loginRequest) {
+        Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginRequest.getPhone(), loginRequest.getPassword()));
 
-    Set<Role> roles = new HashSet<>();
-    Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT
-    ).orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
-    roles.add(clientRole);
-    user.setRoles(roles);
-    userRepository.save(user);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication, getByPhone(loginRequest.getPhone()).getId());
 
-    return ResponseEntity.ok(new MessageResponse(USER_REGISTERED_SUCCESSFULLY));
-  }
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
 
-  @Override
-  public User getByPhone(String phone) {
-    User user = userRepository.findByUsername(phone)
-        .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_NAME + phone));
-    return user;
-  }
-
-  @Override
-  public Boolean isUserExists(String phone) {
-    return userRepository.existsByUsername(phone);
-  }
-
-  public Response sendVerificationCode(String phone){
-    if (verificationCodeRepository.alreadySend(phone) != null){
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "СМС уже отправлено");
+        return ResponseEntity.ok(new JwtResponse(jwt,
+            userDetails.id(),
+            userDetails.username(),
+            userDetails.email(),
+            roles));
     }
-    VerificationCode verificationCode = new VerificationCode();
-    verificationCode.setPhone(phone);
-    verificationCode.setCode(verificationCodeService.getVerificationCodeRandomString());
-    verificationCodeRepository.save(verificationCode);
-    smsService.sendSmsVerification(phone, verificationCode.getCode() + " код подтверждения GSMH");
-    return new Response(null, "SUCCESS", "СМС успешно отправлено");
-  }
+
+    @Override
+    public ResponseEntity<?> registerUser(SignupRequest signUpRequest) {
+        if (signUpRequest.getPassword().length() < 6)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Пароль должен быть не менее 6 символов");
+
+        if (signUpRequest.getCode() == null || verificationCodeRepository.getByPhoneAndCode(signUpRequest.getPhone(), signUpRequest.getCode()) == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "неправильный код");
+        }
+
+        if (userRepository.existsByUsername(signUpRequest.getPhone())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, USER_NAME_ALREADY_TAKEN);
+        }
+
+
+        // Create new user's account
+        User user = new User();
+        user.setPhone(signUpRequest.getPhone());
+        user.setPassword(encoder.encode(signUpRequest.getPassword()));
+        user.setActive(true);
+
+        Set<Role> roles = new HashSet<>();
+        Role clientRole = roleRepository.findByName(ERole.ROLE_CLIENT
+        ).orElseThrow(() -> new RuntimeException(ROLE_NOT_FOUND));
+        roles.add(clientRole);
+        user.setRoles(roles);
+        userRepository.save(user);
+
+        return ResponseEntity.ok(new MessageResponse(USER_REGISTERED_SUCCESSFULLY));
+    }
+
+    @Override
+    public User getByPhone(String phone) {
+        User user = userRepository.findByUsername(phone)
+            .orElseThrow(() -> new UsernameNotFoundException(USER_NOT_FOUND_WITH_NAME + phone));
+        return user;
+    }
+
+    @Override
+    public Boolean isUserExists(String phone) {
+        return userRepository.existsByUsername(phone);
+    }
+
+    public Response sendVerificationCode(String phone) {
+        if (verificationCodeRepository.alreadySend(phone) != null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "СМС уже отправлено");
+        }
+        VerificationCode verificationCode = new VerificationCode();
+        verificationCode.setPhone(phone);
+        verificationCode.setCode(verificationCodeService.getVerificationCodeRandomString());
+        verificationCodeRepository.save(verificationCode);
+        smsService.sendSmsVerification(phone, verificationCode.getCode() + " код подтверждения GSMH");
+        return new Response(null, "SUCCESS", "СМС успешно отправлено");
+    }
+
+    public UserDto getProfile() {
+        Long currentUserId = securityService.getCurrentUserId();
+        User currentUser = getUser(currentUserId);
+        return currentUser.getUserDto();
+    }
+
+    public UserDto updateProfile(UserDto userDto) {
+        Long currentUserId = securityService.getCurrentUserId();
+        User currentUser = getUser(currentUserId);
+        if (userDto.getEmail() != null && !userDto.getEmail().isEmpty() && !userDto.getEmail().isBlank() && !userDto.getEmail().equals(currentUser.getEmail())) {
+            currentUser.setEmail(userDto.getEmail());
+        }
+        if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty() && !userDto.getFirstName().isBlank() && !userDto.getFirstName().equals(currentUser.getFirstName())) {
+            currentUser.setFirstName(userDto.getFirstName());
+        }
+        if (userDto.getLastName() != null && !userDto.getLastName().isEmpty() && !userDto.getLastName().isBlank() && !userDto.getLastName().equals(currentUser.getLastName())) {
+            currentUser.setEmail(userDto.getLastName());
+        }
+        if (userDto.getAvatarUrl() != null && !userDto.getAvatarUrl().isEmpty() && !userDto.getAvatarUrl().isBlank() && !userDto.getAvatarUrl().equals(currentUser.getAvatarUrl())) {
+            currentUser.setEmail(userDto.getAvatarUrl());
+        }
+//        if (!userDto.getPhone().isEmpty() && !userDto.getPhone().isBlank() && userDto.getPhone() != null && !userDto.getPhone().equals(currentUser.getPhone())) {
+//            currentUser.setPhone(userDto.getPhone());
+//        }
+        return userRepository.save(currentUser).getUserDto();
+    }
 
 }
