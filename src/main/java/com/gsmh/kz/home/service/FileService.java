@@ -53,20 +53,26 @@ public class FileService {
     private String storeFileBase64(String folder, String fileBase64) {
         String filename = UUID.randomUUID().toString() + ".webp";
 
-        Path fileStorageLocation = Paths.get(uploadDir + "/" + folder).toAbsolutePath().normalize();
         try {
+            // Check if the file's name contains invalid characters
+            if (filename.contains("..")) {
+                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + filename);
+            }
+            // Copy file to the target location (Replacing existing file with the same name)
+            Path fileStorageLocation = Paths.get(uploadDir + "/" + folder).toAbsolutePath().normalize();
             try {
                 Files.createDirectories(fileStorageLocation);
             } catch (Exception ex) {
-                logger.error("Could not create the directory where the uploaded files will be stored." + ex.getMessage());
+                logger.error("Could not create the directory where the uploaded files will be stored." +  ex.getMessage());
                 throw new FileStorageException("Could not create the directory where the uploaded files will be stored.", ex);
             }
             Path targetLocation = fileStorageLocation.resolve(filename);
-            fileBase64 = fileBase64.replace(" ", "+");
+            fileBase64 = fileBase64.replaceAll(" ", "+");
             Files.copy(new ByteArrayInputStream(Base64.getDecoder().decode(fileBase64)), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+
             return filename;
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file $fileName. Please try again!", ex);
+            throw new FileStorageException("Could not store file " + filename + ". Please try again!", ex);
         }
     }
 
