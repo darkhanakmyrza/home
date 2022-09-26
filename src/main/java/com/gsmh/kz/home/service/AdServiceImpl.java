@@ -66,8 +66,8 @@ public class AdServiceImpl implements AdService {
   public void deleteAd(Long id) {
     Ad ad = adRepository.findById(id).orElseThrow(
         () -> new ResponseStatusException(HttpStatus.NOT_FOUND, ADS_NOT_FOUND));
-//    if (!ad.getUser().equals(securityService.getCurrentUser()))
-//      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    if (!ad.getCreatedBy().equals(securityService.getCurrentUserId()))
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     adRepository.deleteById(id);
   }
 

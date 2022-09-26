@@ -55,9 +55,5 @@ public class AdsController {
     return adService.filterAds(limit, offset);
   }
 
-  @GetMapping("/allModeratingAds")
-  public List<Ad> shawAllModeratingAds() {
-    List<Ad> allModeratingAds = adService.getAllModeratingAds();
-    return allModeratingAds;
-  }
+
 }
