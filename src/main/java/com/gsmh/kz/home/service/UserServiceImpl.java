@@ -146,10 +146,10 @@ public class UserServiceImpl implements UserService {
             currentUser.setFirstName(userDto.getFirstName());
         }
         if (userDto.getLastName() != null && !userDto.getLastName().isEmpty() && !userDto.getLastName().isBlank() && !userDto.getLastName().equals(currentUser.getLastName())) {
-            currentUser.setEmail(userDto.getLastName());
+            currentUser.setLastName(userDto.getLastName());
         }
         if (userDto.getAvatarUrl() != null && !userDto.getAvatarUrl().isEmpty() && !userDto.getAvatarUrl().isBlank() && !userDto.getAvatarUrl().equals(currentUser.getAvatarUrl())) {
-            currentUser.setEmail(userDto.getAvatarUrl());
+            currentUser.setAvatarUrl(userDto.getAvatarUrl());
         }
 //        if (!userDto.getPhone().isEmpty() && !userDto.getPhone().isBlank() && userDto.getPhone() != null && !userDto.getPhone().equals(currentUser.getPhone())) {
 //            currentUser.setPhone(userDto.getPhone());
