@@ -19,4 +19,9 @@ public class FileController{
   public ResponseEntity<FileResponse> uploadSingleFile(@RequestParam(name = "file") MultipartFile file){
     return ResponseEntity.ok(fileService.saveSingleFile(file));
   }
+
+  @PostMapping("/uploadFileBase64")
+  public ResponseEntity<FileResponse> uploadSingleFileBase64(@RequestParam String fileBase64){
+    return ResponseEntity.ok(fileService.saveSingleFileBase64(fileBase64));
+  }
 }
