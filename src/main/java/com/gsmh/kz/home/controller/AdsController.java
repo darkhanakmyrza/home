@@ -18,49 +18,49 @@ import java.util.List;
 @CrossOrigin
 @AllArgsConstructor
 public class AdsController {
-  private final AdService adService;
-  private final SecurityService securityService;
+    private final AdService adService;
+    private final SecurityService securityService;
 
-  @GetMapping
-  public List<Ad> shawAllAds() {
-    List<Ad> allAds = adService.getAllAds();
-    return allAds;
-  }
+    @GetMapping
+    public List<Ad> shawAllAds() {
+        List<Ad> allAds = adService.getAllAds();
+        return allAds;
+    }
 
-  @GetMapping("/{id}")
-  public Ad getAd(@PathVariable Long id) {
-    Ad ad = adService.getAd(id);
-    return ad;
-  }
+    @GetMapping("/{id}")
+    public Ad getAd(@PathVariable Long id) {
+        Ad ad = adService.getAd(id);
+        return ad;
+    }
 
-  @PostMapping
-  @PreAuthorize("isAuthenticated()")
-  public Ad addNewAd(@RequestBody AdsDto adsDto) {
-    return adService.saveAd(adsDto);
-  }
+    @PostMapping
+    @PreAuthorize("isAuthenticated()")
+    public Ad addNewAd(@RequestBody AdsDto adsDto) {
+        return adService.saveAd(adsDto);
+    }
 
-  @GetMapping("/findByUserId/{id}")
-  public List<Ad> findByUserId(@PathVariable Long id) {
-    return adService.getAdsByUser(id);
-  }
+    @GetMapping("/findByUserId/{id}")
+    public List<Ad> findByUserId(@PathVariable Long id) {
+        return adService.getAdsByUser(id);
+    }
 
-  @DeleteMapping("/{id}")
-  @PreAuthorize("isAuthenticated()")
-  public String deleteAds(@PathVariable Long id) {
-    adService.deleteAd(id);
-    return "ads removed";
-  }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public String deleteAds(@PathVariable Long id) {
+        adService.deleteAd(id);
+        return "ads removed";
+    }
 
-  @PostMapping("/filter/{limit}/{offset}")
-  public AdsResponse filterAds(@PathVariable Integer limit, @PathVariable Integer offset) {
-    return adService.filterAds(limit, offset);
-  }
+    @PostMapping("/filter/{limit}/{offset}")
+    public AdsResponse filterAds(@PathVariable Integer limit, @PathVariable Integer offset) {
+        return adService.filterAds(limit, offset);
+    }
 
-  @PreAuthorize("isAuthenticated()")
-  @PostMapping("/myAdsByStatus/{status}")
-  public List<Ad> myAdsByStatus(@PathVariable AdModeratorStatusEnum status){
-    return adService.getAllMyAdsByStatus(status);
-  }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/myAdsByStatus/{status}")
+    public List<Ad> myAdsByStatus(@PathVariable AdModeratorStatusEnum status) {
+        return adService.getAllMyAdsByStatus(status);
+    }
 
 
 }
