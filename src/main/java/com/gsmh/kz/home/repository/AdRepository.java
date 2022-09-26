@@ -16,5 +16,8 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
   @Query(value = "select count(id) from ads", nativeQuery = true)
   Integer filterAdCount();
 
+  @Query(value = "select * from ads where created_by=:userId and moderator_status=:moderatorStatusOrder order by created_date desc", nativeQuery = true)
+  List<Ad> getAdsByUserIdAndStatus(Long userId, int moderatorStatusOrder);
+
   List<Ad> findByModeratorStatus(AdModeratorStatusEnum moderatorStatus);
 }

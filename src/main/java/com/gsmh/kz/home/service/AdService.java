@@ -25,4 +25,6 @@ public interface AdService {
   List<Ad> getAllModeratingAds();
 
   void updateModeratorStatus(Long id, AdModeratorStatusEnum moderatorStatus);
+
+  List<Ad> getAllMyAdsByStatus(AdModeratorStatusEnum moderatorStatus);
 }

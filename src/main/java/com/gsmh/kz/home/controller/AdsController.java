@@ -4,6 +4,7 @@ package com.gsmh.kz.home.controller;
 import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.dto.AdsResponse;
 import com.gsmh.kz.home.model.entity.Ad;
+import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 import com.gsmh.kz.home.service.AdService;
 import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
@@ -53,6 +54,12 @@ public class AdsController {
   @PostMapping("/filter/{limit}/{offset}")
   public AdsResponse filterAds(@PathVariable Integer limit, @PathVariable Integer offset) {
     return adService.filterAds(limit, offset);
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @PostMapping("/myAdsByStatus/{status}")
+  public List<Ad> myAdsByStatus(@PathVariable AdModeratorStatusEnum status){
+    return adService.getAllMyAdsByStatus(status);
   }
 
 
