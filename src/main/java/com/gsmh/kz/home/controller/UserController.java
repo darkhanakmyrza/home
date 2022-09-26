@@ -46,7 +46,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getProfile());
     }
 
-    @PostMapping("/profile")
+    @PatchMapping("/profile")
     public ResponseEntity<?> updateProfile(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.updateProfile(userDto));
     }
