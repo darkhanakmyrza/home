@@ -1,5 +1,6 @@
 package com.gsmh.kz.home.config.security.jwt;
 
+import com.gsmh.kz.home.model.entity.Role;
 import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.service.UserService;
 import com.gsmh.kz.home.service.security.UserDetailsImpl;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 import static com.gsmh.kz.home.constants.JWTConstants.*;
 
@@ -26,7 +29,7 @@ public class JwtUtils {
   @Value("${home.app.jwtExpirationMs}")
   private int jwtExpirationMs;
 
-  public String generateJwtToken(Authentication authentication, Long id) {
+  public String generateJwtToken(Authentication authentication, Long id, List<String> roles) {
 
     UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 
@@ -36,6 +39,7 @@ public class JwtUtils {
 
     return Jwts.builder()
         .setClaims(map)
+        .claim("roles", roles)
         .setSubject((userPrincipal.username()))
         .setIssuedAt(new Date())
         .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs)).signWith(SignatureAlgorithm.HS512, jwtSecret)

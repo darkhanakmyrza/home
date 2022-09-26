@@ -2,6 +2,7 @@ package com.gsmh.kz.home.service;
 
 import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.dto.AdsResponse;
+import com.gsmh.kz.home.model.dto.AdsStatusDto;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 
@@ -27,4 +28,8 @@ public interface AdService {
   void updateModeratorStatus(Long id, AdModeratorStatusEnum moderatorStatus);
 
   List<Ad> getAllMyAdsByStatus(AdModeratorStatusEnum moderatorStatus);
+
+  List<Ad> getAllAdsByStatus(AdModeratorStatusEnum moderatorStatus);
+
+  void moderateAds(AdsStatusDto adsStatusDto);
 }

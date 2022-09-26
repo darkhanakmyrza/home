@@ -2,6 +2,7 @@ package com.gsmh.kz.home.service;
 
 import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.dto.AdsResponse;
+import com.gsmh.kz.home.model.dto.AdsStatusDto;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
@@ -104,5 +105,17 @@ public class AdServiceImpl implements AdService {
     public List<Ad> getAllMyAdsByStatus(AdModeratorStatusEnum moderatorStatus) {
         Long currentUserId = securityService.getCurrentUserId();
         return adRepository.getAdsByUserIdAndStatus(currentUserId, moderatorStatus.ordinal());
+    }
+
+    @Override
+    public List<Ad> getAllAdsByStatus(AdModeratorStatusEnum moderatorStatus) {
+        return adRepository.getAdsByStatus(moderatorStatus.ordinal());
+    }
+
+    public void moderateAds(AdsStatusDto adsStatusDto){
+        Ad ad = getAd(adsStatusDto.getAdId());
+        ad.setModeratorStatus(adsStatusDto.getStatus());
+        ad.setModerateMsg(adsStatusDto.getModerateMsg());
+        adRepository.save(ad);
     }
 }

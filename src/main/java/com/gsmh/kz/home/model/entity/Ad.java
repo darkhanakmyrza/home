@@ -82,6 +82,8 @@ public class Ad extends Audit {
 
   private String city;
 
+  private String moderateMsg;
+
   @Type(type = "string-array")
   @Column(name = "photos", columnDefinition = "text[]")
   private String[] photos;
