@@ -65,7 +65,7 @@ public class AdsController {
         return adService.getAllMyAdsByStatus(status);
     }
 
-    @PreAuthorize("isAutenticated()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/favAds/addOrRemove")
     public AdsDto addOrRemoveFavAds(@RequestBody FavAdsRequestDto favAdsRequestDto) {
         return favAdsService.addOrRemoveFavAds(favAdsRequestDto);
