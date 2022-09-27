@@ -142,12 +142,10 @@ public class UserServiceImpl implements UserService {
         if (userDto.getEmail() != null && !userDto.getEmail().isEmpty() && !userDto.getEmail().isBlank() && !userDto.getEmail().equals(currentUser.getEmail())) {
             currentUser.setEmail(userDto.getEmail());
         }
-        if (userDto.getFirstName() != null && !userDto.getFirstName().isEmpty() && !userDto.getFirstName().isBlank() && !userDto.getFirstName().equals(currentUser.getFirstName())) {
-            currentUser.setFirstName(userDto.getFirstName());
+        if (userDto.getName() != null && !userDto.getName().isEmpty() && !userDto.getName().isBlank() && !userDto.getName().equals(currentUser.getName())) {
+            currentUser.setName(userDto.getName());
         }
-        if (userDto.getLastName() != null && !userDto.getLastName().isEmpty() && !userDto.getLastName().isBlank() && !userDto.getLastName().equals(currentUser.getLastName())) {
-            currentUser.setLastName(userDto.getLastName());
-        }
+
         if (userDto.getAvatarUrl() != null && !userDto.getAvatarUrl().isEmpty() && !userDto.getAvatarUrl().isBlank() && !userDto.getAvatarUrl().equals(currentUser.getAvatarUrl())) {
             currentUser.setAvatarUrl(userDto.getAvatarUrl());
         }

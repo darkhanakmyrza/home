@@ -23,44 +23,40 @@ import java.util.Set;
         @UniqueConstraint(columnNames = "email")
     })
 public class User {
-  @Id
-  @Column(name = "id")
-  @SequenceGenerator(name = "usersIdSeq", sequenceName = "users_id_seq", allocationSize = 1)
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersIdSeq")
-  private Long id;
+    @Id
+    @Column(name = "id")
+    @SequenceGenerator(name = "usersIdSeq", sequenceName = "users_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "usersIdSeq")
+    private Long id;
 
-  @Column(name = "first_name")
-  private String firstName;
+    private String name;
 
-  @Column(name = "last_name")
-  private String lastName;
+    @Column(name = "email")
+    private String email;
 
-  @Column(name = "email")
-  private String email;
+    @Column(name = "phone")
+    private String phone;
 
-  @Column(name = "phone")
-  private String phone;
+    @Column(name = "is_active")
+    private boolean isActive;
 
-  @Column(name = "is_active")
-  private boolean isActive;
+    @NotBlank
+    @Size(max = 120)
+    private String password;
 
-  @NotBlank
-  @Size(max = 120)
-  private String password;
+    private String avatarUrl;
 
-  private String avatarUrl;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "user_roles",
-      joinColumns = @JoinColumn(name = "user_id"),
-      inverseJoinColumns = @JoinColumn(name = "role_id"))
-  private Set<Role> roles = new HashSet<>();
+    public UserDto getUserDto() {
 
-  public UserDto getUserDto(){
-
-    return new UserDto(
-        this.getId(), this.getFirstName(), this.getLastName(),
-        this.getAvatarUrl(), this.getEmail(), this.getPhone(), null
-    );
-  }
+        return new UserDto(
+            this.getId(), this.getName(),
+            this.getAvatarUrl(), this.getEmail(), this.getPhone(), null
+        );
+    }
 }
