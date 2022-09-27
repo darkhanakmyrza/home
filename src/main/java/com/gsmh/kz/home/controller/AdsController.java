@@ -3,9 +3,11 @@ package com.gsmh.kz.home.controller;
 
 import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.dto.AdsResponse;
+import com.gsmh.kz.home.model.dto.FavAdsRequestDto;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 import com.gsmh.kz.home.service.AdService;
+import com.gsmh.kz.home.service.FavAdsService;
 import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +22,7 @@ import java.util.List;
 public class AdsController {
     private final AdService adService;
     private final SecurityService securityService;
+    private final FavAdsService favAdsService;
 
     @GetMapping
     public List<Ad> shawAllAds() {
@@ -62,5 +65,16 @@ public class AdsController {
         return adService.getAllMyAdsByStatus(status);
     }
 
+    @PreAuthorize("isAutenticated()")
+    @PostMapping("/favAds/addOrRemove")
+    public AdsDto addOrRemoveFavAds(@RequestBody FavAdsRequestDto favAdsRequestDto) {
+        return favAdsService.addOrRemoveFavAds(favAdsRequestDto);
+    }
+
+    @PreAuthorize("isAutenticated()")
+    @GetMapping("/favAds/list")
+    public List<AdsDto> getFavAdsDto(){
+        return favAdsService.getFavAds();
+    }
 
 }

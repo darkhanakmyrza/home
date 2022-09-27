@@ -1,10 +1,14 @@
 package com.gsmh.kz.home.model.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AdsDto {
   private Long id;
   private String description;
@@ -27,4 +31,6 @@ public class AdsDto {
   private String region;
   private String city;
   private String[] photos;
+  private Boolean isFavAds;
+  private String moderateMsg;
 }

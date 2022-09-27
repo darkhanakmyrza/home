@@ -113,9 +113,10 @@ public class AdServiceImpl implements AdService {
     }
 
     public void moderateAds(AdsStatusDto adsStatusDto){
-        Ad ad = getAd(adsStatusDto.getAdId());
+        Ad ad = getAd(adsStatusDto.getAdsId());
         ad.setModeratorStatus(adsStatusDto.getStatus());
         ad.setModerateMsg(adsStatusDto.getModerateMsg());
         adRepository.save(ad);
     }
+
 }
