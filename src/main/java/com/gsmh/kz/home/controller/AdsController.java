@@ -71,7 +71,7 @@ public class AdsController {
         return favAdsService.addOrRemoveFavAds(favAdsRequestDto);
     }
 
-    @PreAuthorize("isAutenticated()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/favAds/list")
     public List<AdsDto> getFavAdsDto(){
         return favAdsService.getFavAds();

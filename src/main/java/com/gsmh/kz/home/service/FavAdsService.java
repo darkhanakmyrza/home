@@ -31,7 +31,7 @@ public class FavAdsService {
             adsDto.setIsFavAds(false);
         } else {
             FavAds newFavAds = new FavAds();
-            favAds.setAdsId(favAdsRequestDto.getAdsId());
+            newFavAds.setAdsId(ad.getId());
             favAdsRepository.save(newFavAds);
             adsDto.setIsFavAds(true);
         }
