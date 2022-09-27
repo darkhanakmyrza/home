@@ -32,7 +32,7 @@ public class FavAdsService {
         } else {
             FavAds newFavAds = new FavAds();
             favAds.setAdsId(favAdsRequestDto.getAdsId());
-            favAdsRepository.save(favAds);
+            favAdsRepository.save(newFavAds);
             adsDto.setIsFavAds(true);
         }
         return adsDto;
