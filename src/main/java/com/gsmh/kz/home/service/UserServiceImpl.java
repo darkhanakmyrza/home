@@ -140,6 +140,8 @@ public class UserServiceImpl implements UserService {
         Long currentUserId = securityService.getCurrentUserId();
         User currentUser = getUser(currentUserId);
         if (userDto.getEmail() != null && !userDto.getEmail().isEmpty() && !userDto.getEmail().isBlank() && !userDto.getEmail().equals(currentUser.getEmail())) {
+            if (userRepository.existsByEmail(userDto.getEmail()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Эл. адрес уже существует");
             currentUser.setEmail(userDto.getEmail());
         }
         if (userDto.getName() != null && !userDto.getName().isEmpty() && !userDto.getName().isBlank() && !userDto.getName().equals(currentUser.getName())) {
@@ -149,10 +151,17 @@ public class UserServiceImpl implements UserService {
         if (userDto.getAvatarUrl() != null && !userDto.getAvatarUrl().isEmpty() && !userDto.getAvatarUrl().isBlank() && !userDto.getAvatarUrl().equals(currentUser.getAvatarUrl())) {
             currentUser.setAvatarUrl(userDto.getAvatarUrl());
         }
+
+        if (userDto.getCompany() != null && userDto.getCompany().length() != 0 && !userDto.getCompany().equals(currentUser.getCompany())) {
+            currentUser.setCompany(userDto.getCompany());
+        }
+
+        if (userDto.getCity() != null && userDto.getCity().length() != 0 && !userDto.getCity().equals(currentUser.getCity())) {
+            currentUser.setCity(userDto.getCity());
+        }
 //        if (!userDto.getPhone().isEmpty() && !userDto.getPhone().isBlank() && userDto.getPhone() != null && !userDto.getPhone().equals(currentUser.getPhone())) {
 //            currentUser.setPhone(userDto.getPhone());
 //        }
         return userRepository.save(currentUser).getUserDto();
     }
-
 }

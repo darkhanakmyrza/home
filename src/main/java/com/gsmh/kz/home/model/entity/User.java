@@ -46,6 +46,9 @@ public class User {
 
     private String avatarUrl;
 
+    private String city;
+    private String company;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
         joinColumns = @JoinColumn(name = "user_id"),
@@ -53,10 +56,14 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public UserDto getUserDto() {
-
-        return new UserDto(
-            this.getId(), this.getName(),
-            this.getAvatarUrl(), this.getEmail(), this.getPhone(), null
-        );
+        UserDto userDto = new UserDto();
+        userDto.setCity(this.getCity());
+        userDto.setAvatarUrl(this.getAvatarUrl());
+        userDto.setName(this.getName());
+        userDto.setCompany(this.getCompany());
+        userDto.setEmail(this.getEmail());
+        userDto.setPhone(this.getPhone());
+        userDto.setId(this.getId());
+        return userDto;
     }
 }
