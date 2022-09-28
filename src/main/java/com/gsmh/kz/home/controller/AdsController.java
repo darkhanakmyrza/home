@@ -60,7 +60,7 @@ public class AdsController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/myAdsByStatus/{status}")
+    @GetMapping("/myAdsByStatus/{status}")
     public List<Ad> myAdsByStatus(@PathVariable AdModeratorStatusEnum status) {
         return adService.getAllMyAdsByStatus(status);
     }

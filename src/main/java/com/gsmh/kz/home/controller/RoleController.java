@@ -20,7 +20,7 @@ public class RoleController {
 
     private final AdService adService;
 
-    @PostMapping("/moderator/ads/{status}")
+    @GetMapping("/moderator/ads/{status}")
     public List<Ad> getAdsByStatus(@PathVariable AdModeratorStatusEnum status) {
         return adService.getAllAdsByStatus(status);
     }
