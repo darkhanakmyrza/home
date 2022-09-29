@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AdsStatusDto {
-    private Long adsId;
+    private Long id;
     private String moderateMsg;
     private AdModeratorStatusEnum status;
 }
