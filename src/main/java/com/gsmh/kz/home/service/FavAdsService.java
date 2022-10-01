@@ -21,6 +21,32 @@ public class FavAdsService {
     private AdService adService;
     private AdsToDto adsToDto;
 
+    public AdsDto addToFavAds(Long adId){
+        Long currentUserId = securityService.getCurrentUserId();
+        Ad ad = adService.getAd(adId);
+        AdsDto adsDto = adsToDto.adsToAdsDto(ad);
+        FavAds favAds = favAdsRepository.getByUserIdAndAdsId(currentUserId, adId);
+        if (favAds == null){
+            FavAds newFavAds = new FavAds();
+            newFavAds.setAdsId(ad.getId());
+            favAdsRepository.save(newFavAds);
+        }
+        adsDto.setIsFavAds(true);
+        return adsDto;
+    }
+
+    public AdsDto removeFromFavAds(Long adId){
+        Long currentUserId = securityService.getCurrentUserId();
+        Ad ad = adService.getAd(adId);
+        AdsDto adsDto = adsToDto.adsToAdsDto(ad);
+        FavAds favAds = favAdsRepository.getByUserIdAndAdsId(currentUserId, adId);
+        if (favAds != null){
+            favAdsRepository.delete(favAds);
+        }
+        adsDto.setIsFavAds(false);
+        return adsDto;
+    }
+
     public AdsDto addOrRemoveFavAds(FavAdsRequestDto favAdsRequestDto) {
         Long currentUserId = securityService.getCurrentUserId();
         Ad ad = adService.getAd(favAdsRequestDto.getAdsId());

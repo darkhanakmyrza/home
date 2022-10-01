@@ -66,9 +66,15 @@ public class AdsController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/favAds/addOrRemove")
-    public AdsDto addOrRemoveFavAds(@RequestBody FavAdsRequestDto favAdsRequestDto) {
-        return favAdsService.addOrRemoveFavAds(favAdsRequestDto);
+    @GetMapping("/addFavAds/{adId}")
+    public AdsDto addFavAds(@PathVariable Long adId){
+        return favAdsService.addToFavAds(adId);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/removeFavAds/{adId}")
+    public AdsDto removeFavAds(@PathVariable Long adId){
+        return favAdsService.removeFromFavAds(adId);
     }
 
     @PreAuthorize("isAuthenticated()")
