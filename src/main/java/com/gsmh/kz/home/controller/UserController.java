@@ -51,4 +51,9 @@ public class UserController {
         return ResponseEntity.ok(userService.updateProfile(userDto));
     }
 
+    @GetMapping("/info/{userId}")
+    public ResponseEntity<UserDto> getProfileByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok(userService.getProfileByUserId(userId));
+    }
+
 }

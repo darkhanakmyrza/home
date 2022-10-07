@@ -24,4 +24,6 @@ public interface UserService {
     UserDto updateProfile(UserDto userDto);
 
     UserDto getProfile();
+
+    UserDto getProfileByUserId(Long userId);
 }

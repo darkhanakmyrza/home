@@ -136,6 +136,11 @@ public class UserServiceImpl implements UserService {
         return currentUser.getUserDto();
     }
 
+    public UserDto getProfileByUserId(Long userId){
+        User currentUser = getUser(userId);
+        return currentUser.getUserDto();
+    }
+
     public UserDto updateProfile(UserDto userDto) {
         Long currentUserId = securityService.getCurrentUserId();
         User currentUser = getUser(currentUserId);
