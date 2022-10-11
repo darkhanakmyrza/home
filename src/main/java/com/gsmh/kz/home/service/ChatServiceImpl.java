@@ -2,12 +2,15 @@ package com.gsmh.kz.home.service;
 
 import com.gsmh.kz.home.model.dto.ChatDto;
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
+import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.Message;
 import com.gsmh.kz.home.model.entity.MessageBox;
 import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -15,41 +18,46 @@ import java.util.List;
 @AllArgsConstructor
 public class ChatServiceImpl implements ChatService {
 
-  private SecurityService securityService;
-  private MessageService messageService;
-  private MessageBoxService messageBoxService;
-  private UserService userService;
+    private SecurityService securityService;
+    private MessageService messageService;
+    private MessageBoxService messageBoxService;
+    private UserService userService;
+    private AdService adService;
 
-  @Override
-  public void sendMessage(RequestMessageDto requestMessageDto) {
-    Long userId = securityService.getCurrentUserId();
-    User currentUser = userService.getUser(userId);
-    MessageBox messageBox = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId() ,requestMessageDto.getAdsId());
-    if (messageBox == null) {
-      messageBox = messageBoxService.createMessageBox(currentUser.getId(), requestMessageDto.getToUserId());
+    @Override
+    public void sendMessage(RequestMessageDto requestMessageDto) {
+        Long userId = securityService.getCurrentUserId();
+        User currentUser = userService.getUser(userId);
+        Ad ad = adService.getAd(requestMessageDto.getAdsId());
+        if (ad == null || !ad.getCreatedBy().equals(requestMessageDto.getToUserId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ad not found or toUserId is wrong");
+        }
+        MessageBox messageBox = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId(), requestMessageDto.getAdsId());
+        if (messageBox == null) {
+            messageBox = messageBoxService.createMessageBox(currentUser.getId(), requestMessageDto.getToUserId());
+        }
+        Message message = messageService.createMessage(requestMessageDto, currentUser.getId());
+        messageBoxService.saveMessageBox(messageBox, requestMessageDto, currentUser, message.getId());
     }
-    Message message = messageService.createMessage(requestMessageDto, currentUser.getId());
-    messageBoxService.saveMessageBox(messageBox, requestMessageDto, currentUser, message.getId());
-  }
 
-  @Override
-  public List<Message> getMessages(Long toUserId, Long adsId) {
-    return messageService.getMessagesByToUsersAndAdsId(securityService.getCurrentUserId(), toUserId, adsId);
-  }
+    @Override
+    public List<Message> getMessages(Long toUserId, Long adsId) {
+        return messageService.getMessagesByToUsersAndAdsId(securityService.getCurrentUserId(), toUserId, adsId);
+    }
 
-  @Override
-  public List<ChatDto> getChats() {
-    Long currentUserId = securityService.getCurrentUserId();
-    List<MessageBox> messageBoxes = messageBoxService.findMessageBoxesByUserId(currentUserId);
-    return messageBoxes.stream().map(it -> messageBoxToChatDto(it, currentUserId)).toList();
-  }
+    @Override
+    public List<ChatDto> getChats() {
+        Long currentUserId = securityService.getCurrentUserId();
+        List<MessageBox> messageBoxes = messageBoxService.findMessageBoxesByUserId(currentUserId);
+        return messageBoxes.stream().map(it -> messageBoxToChatDto(it, currentUserId)).toList();
+    }
 
-  private ChatDto messageBoxToChatDto(MessageBox messageBox, Long currentUserId) {
-    User secondUser = userService.getUser(currentUserId.equals(messageBox.getToUserId()) ? messageBox.getFromUserId() : messageBox.getToUserId());
-    Boolean amISender = messageBox.getFromUserId().equals(currentUserId);
-    Message lastMessage = messageService.getById(messageBox.getLastMessageId());
-    String status = amISender ? "Отправлено" : (messageBox.getRead() != null) ? "Сообщение" : "Новое сообщение";
-    return new ChatDto(messageBox.getId(), secondUser.getName(), secondUser.getId(), status, messageBox.getUpdatedDate(), lastMessage.getText(), lastMessage, secondUser.getAvatarUrl(), messageBox.getAdsId());
-  }
+    private ChatDto messageBoxToChatDto(MessageBox messageBox, Long currentUserId) {
+        User secondUser = userService.getUser(currentUserId.equals(messageBox.getToUserId()) ? messageBox.getFromUserId() : messageBox.getToUserId());
+        Boolean amISender = messageBox.getFromUserId().equals(currentUserId);
+        Message lastMessage = messageService.getById(messageBox.getLastMessageId());
+        String status = amISender ? "Отправлено" : (messageBox.getRead() != null) ? "Сообщение" : "Новое сообщение";
+        return new ChatDto(messageBox.getId(), secondUser.getName(), secondUser.getId(), status, messageBox.getUpdatedDate(), lastMessage.getText(), lastMessage, secondUser.getAvatarUrl(), messageBox.getAdsId());
+    }
 
 }
