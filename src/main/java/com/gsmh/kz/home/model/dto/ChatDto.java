@@ -11,12 +11,13 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 public class ChatDto {
-  private Long messageBoxId;
-  private String name;
-  private Long userId;
-  private String status;
-  private Date updatedDate;
-  private String lastMessageText;
-  private Message lastMessage;
-  private String image;
+    private Long messageBoxId;
+    private String name;
+    private Long userId;
+    private String status;
+    private Date updatedDate;
+    private String lastMessageText;
+    private Message lastMessage;
+    private String image;
+    private Long adsId;
 }

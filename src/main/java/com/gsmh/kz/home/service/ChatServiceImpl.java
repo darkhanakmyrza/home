@@ -49,7 +49,7 @@ public class ChatServiceImpl implements ChatService {
     Boolean amISender = messageBox.getFromUserId().equals(currentUserId);
     Message lastMessage = messageService.getById(messageBox.getLastMessageId());
     String status = amISender ? "Отправлено" : (messageBox.getRead() != null) ? "Сообщение" : "Новое сообщение";
-    return new ChatDto(messageBox.getId(), secondUser.getName(), secondUser.getId(), status, messageBox.getUpdatedDate(), lastMessage.getText(), lastMessage, secondUser.getAvatarUrl());
+    return new ChatDto(messageBox.getId(), secondUser.getName(), secondUser.getId(), status, messageBox.getUpdatedDate(), lastMessage.getText(), lastMessage, secondUser.getAvatarUrl(), messageBox.getAdsId());
   }
 
 }
