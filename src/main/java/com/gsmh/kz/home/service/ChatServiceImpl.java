@@ -29,7 +29,7 @@ public class ChatServiceImpl implements ChatService {
         Long userId = securityService.getCurrentUserId();
         User currentUser = userService.getUser(userId);
         Ad ad = adService.getAd(requestMessageDto.getAdsId());
-        if (ad == null || !ad.getCreatedBy().equals(requestMessageDto.getToUserId())) {
+        if (ad == null ) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ad not found or toUserId is wrong");
         }
         MessageBox messageBox = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId(), requestMessageDto.getAdsId());
