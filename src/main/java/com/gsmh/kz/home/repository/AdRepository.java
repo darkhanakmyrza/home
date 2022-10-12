@@ -24,6 +24,6 @@ public interface AdRepository extends JpaRepository<Ad, Long> {
 
     List<Ad> findByModeratorStatus(AdModeratorStatusEnum moderatorStatus);
 
-    @Query(value = "select * from ads where description like %?1% and moderator_status=2", nativeQuery = true)
+    @Query(value = "select * from ads where description like %?1% and moderator_status=1", nativeQuery = true)
     List<Ad> findAllWhereDescription(String description);
 }
