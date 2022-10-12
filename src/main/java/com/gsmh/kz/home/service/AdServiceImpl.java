@@ -7,6 +7,7 @@ import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 import com.gsmh.kz.home.repository.AdRepository;
+import com.gsmh.kz.home.service.mapper.AdsToDto;
 import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.gsmh.kz.home.constants.ServiceConstants.ADS_NOT_FOUND;
 
@@ -22,6 +24,7 @@ import static com.gsmh.kz.home.constants.ServiceConstants.ADS_NOT_FOUND;
 public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
     private final SecurityService securityService;
+    private AdsToDto adsToDtoMapper;
 
     @Override
     public List<Ad> getAllAds() {
@@ -117,6 +120,12 @@ public class AdServiceImpl implements AdService {
         ad.setModeratorStatus(adsStatusDto.getStatus());
         ad.setModerateMsg(adsStatusDto.getModerateMsg());
         adRepository.save(ad);
+    }
+
+    @Override
+    public List<Ad> searchByDescription(String description) {
+        List<Ad> adList = adRepository.findAllWhereDescription(description);
+        return adList;
     }
 
 }

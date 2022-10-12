@@ -67,20 +67,24 @@ public class AdsController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/addFavAds/{adId}")
-    public AdsDto addFavAds(@PathVariable Long adId){
+    public AdsDto addFavAds(@PathVariable Long adId) {
         return favAdsService.addToFavAds(adId);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/removeFavAds/{adId}")
-    public AdsDto removeFavAds(@PathVariable Long adId){
+    public AdsDto removeFavAds(@PathVariable Long adId) {
         return favAdsService.removeFromFavAds(adId);
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/favAds/list")
-    public List<AdsDto> getFavAdsDto(){
+    public List<AdsDto> getFavAdsDto() {
         return favAdsService.getFavAds();
     }
 
+    @GetMapping("/search/{description}")
+    public List<Ad> searchByDescription(@PathVariable String description) {
+        return adService.searchByDescription(description);
+    }
 }

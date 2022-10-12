@@ -32,4 +32,6 @@ public interface AdService {
   List<Ad> getAllAdsByStatus(AdModeratorStatusEnum moderatorStatus);
 
   void moderateAds(AdsStatusDto adsStatusDto);
+
+  List<Ad> searchByDescription(String description);
 }
