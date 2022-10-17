@@ -29,14 +29,14 @@ public class UserController {
     }
 
     @PreAuthorize("isAnonymous() or isAuthenticated()")
-    @PostMapping("/checkVerificationCode/")
+    @PostMapping("/checkVerificationCode")
     public ResponseEntity<Boolean> checkVerificationCode(@RequestBody VerificationDto verificationDto) {
         return ResponseEntity.ok(userService.checkVerificationCode(verificationDto));
     }
 
 
     @PreAuthorize("isAnonymous() or isAuthenticated()")
-    @PostMapping("/restoreUserPassowrd/")
+    @PostMapping("/restoreUserPassowrd")
     public ResponseEntity<Response> restoreUserPassword(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.restorePassword(userDto));
     }
