@@ -132,7 +132,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Boolean checkVerificationCode(VerificationDto verificationDto) {
-        return verificationCodeRepository.getByPhoneAndCode(verificationDto.getPhone(), verificationDto.getCode()) == null;
+        return verificationCodeRepository.getByPhoneAndCode(verificationDto.getPhone(), verificationDto.getCode()) != null;
     }
 
 
