@@ -1,9 +1,6 @@
 package com.gsmh.kz.home.controller;
 
-import com.gsmh.kz.home.model.dto.LoginRequest;
-import com.gsmh.kz.home.model.dto.Response;
-import com.gsmh.kz.home.model.dto.SignupRequest;
-import com.gsmh.kz.home.model.dto.UserDto;
+import com.gsmh.kz.home.model.dto.*;
 import com.gsmh.kz.home.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +26,19 @@ public class UserController {
     @PostMapping("sendVerificationCode/{phone}")
     public ResponseEntity<Response> sendVerificationCode(@PathVariable String phone) {
         return ResponseEntity.ok(userService.sendVerificationCode(phone));
+    }
+
+    @PreAuthorize("isAnonymous() or isAuthenticated()")
+    @PostMapping("/checkVerificationCode/")
+    public ResponseEntity<Boolean> checkVerificationCode(@RequestBody VerificationDto verificationDto) {
+        return ResponseEntity.ok(userService.checkVerificationCode(verificationDto));
+    }
+
+
+    @PreAuthorize("isAnonymous() or isAuthenticated()")
+    @PostMapping("/restoreUserPassowrd/")
+    public ResponseEntity<Response> restoreUserPassword(@RequestBody UserDto userDto) {
+        return ResponseEntity.ok(userService.restorePassword(userDto));
     }
 
     @PostMapping("/register")

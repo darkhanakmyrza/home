@@ -19,6 +19,5 @@ public class UserDto {
     private String city;
     private String company;
     private String code;
-
-
+    private String restorePassword;
 }

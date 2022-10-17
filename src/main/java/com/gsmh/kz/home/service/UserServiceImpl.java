@@ -11,6 +11,7 @@ import com.gsmh.kz.home.repository.UserRepository;
 import com.gsmh.kz.home.repository.VerificationCodeRepository;
 import com.gsmh.kz.home.service.security.SecurityService;
 import com.gsmh.kz.home.service.security.UserDetailsImpl;
+import com.gsmh.kz.home.utils.DtoUtils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,15 +131,35 @@ public class UserServiceImpl implements UserService {
         return new Response(null, "SUCCESS", "СМС успешно отправлено");
     }
 
+    public Boolean checkVerificationCode(VerificationDto verificationDto) {
+        return verificationCodeRepository.getByPhoneAndCode(verificationDto.getPhone(), verificationDto.getCode()) == null;
+    }
+
+
     public UserDto getProfile() {
         Long currentUserId = securityService.getCurrentUserId();
         User currentUser = getUser(currentUserId);
         return currentUser.getUserDto();
     }
 
-    public UserDto getProfileByUserId(Long userId){
+    public UserDto getProfileByUserId(Long userId) {
         User currentUser = getUser(userId);
         return currentUser.getUserDto();
+    }
+
+    @Override
+    public Response restorePassword(UserDto userDto) {
+        if (DtoUtils.isNullOrBlank(userDto.getCode()) || DtoUtils.isNullOrBlank(userDto.getPhone()) || DtoUtils.isNullOrBlank(userDto.getRestorePassword())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "validate error");
+        }
+        if (verificationCodeRepository.getByPhoneAndCode(userDto.getPhone(), userDto.getCode()) == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "code is not correct");
+        }
+        User user = userRepository.findByUsername(userDto.getPhone())
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
+        user.setPassword(encoder.encode(userDto.getRestorePassword()));
+        userRepository.save(user);
+        return new Response(null, "SUCCESS", "password restored");
     }
 
     public UserDto updateProfile(UserDto userDto) {
@@ -169,4 +190,5 @@ public class UserServiceImpl implements UserService {
 //        }
         return userRepository.save(currentUser).getUserDto();
     }
+
 }
