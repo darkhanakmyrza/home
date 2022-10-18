@@ -36,7 +36,7 @@ public class UserController {
 
 
     @PreAuthorize("isAnonymous() or isAuthenticated()")
-    @PostMapping("/restoreUserPassowrd")
+    @PostMapping("/restoreUserPassword")
     public ResponseEntity<Response> restoreUserPassword(@RequestBody UserDto userDto) {
         return ResponseEntity.ok(userService.restorePassword(userDto));
     }
