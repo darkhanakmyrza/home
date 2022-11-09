@@ -25,7 +25,6 @@ public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
     private final SecurityService securityService;
     private AdsToDto adsToDtoMapper;
-    private final ChatService chatService;
 
     @Override
     public List<Ad> getAllAds() {
@@ -73,7 +72,7 @@ public class AdServiceImpl implements AdService {
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, ADS_NOT_FOUND));
         if (!ad.getCreatedBy().equals(securityService.getCurrentUserId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        chatService.deleteAllByAdsId(id);
+//        chatService.deleteAllByAdsId(id);
         adRepository.deleteById(id);
     }
 
