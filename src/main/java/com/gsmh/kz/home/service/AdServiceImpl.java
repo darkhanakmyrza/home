@@ -4,27 +4,28 @@ import com.gsmh.kz.home.model.dto.AdsDto;
 import com.gsmh.kz.home.model.dto.AdsResponse;
 import com.gsmh.kz.home.model.dto.AdsStatusDto;
 import com.gsmh.kz.home.model.entity.Ad;
-import com.gsmh.kz.home.model.entity.User;
 import com.gsmh.kz.home.model.enumers.AdModeratorStatusEnum;
 import com.gsmh.kz.home.repository.AdRepository;
 import com.gsmh.kz.home.service.mapper.AdsToDto;
 import com.gsmh.kz.home.service.security.SecurityService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.gsmh.kz.home.constants.ServiceConstants.ADS_NOT_FOUND;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AdServiceImpl implements AdService {
     private final AdRepository adRepository;
     private final SecurityService securityService;
     private AdsToDto adsToDtoMapper;
+    private final ChatService chatService;
 
     @Override
     public List<Ad> getAllAds() {
@@ -72,6 +73,7 @@ public class AdServiceImpl implements AdService {
             () -> new ResponseStatusException(HttpStatus.NOT_FOUND, ADS_NOT_FOUND));
         if (!ad.getCreatedBy().equals(securityService.getCurrentUserId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        chatService.deleteAllByAdsId(id);
         adRepository.deleteById(id);
     }
 

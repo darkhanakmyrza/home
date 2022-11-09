@@ -12,4 +12,5 @@ public interface ChatService {
     void sendMessage(RequestMessageDto requestMessageDto);
     List<Message> getMessages(Long toUserId, Long adsId);
     List<ChatDto> getChats();
+    void deleteAllByAdsId(Long adsId);
 }

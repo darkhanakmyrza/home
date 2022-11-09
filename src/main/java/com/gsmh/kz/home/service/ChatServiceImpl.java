@@ -52,6 +52,12 @@ public class ChatServiceImpl implements ChatService {
         return messageBoxes.stream().map(it -> messageBoxToChatDto(it, currentUserId)).toList();
     }
 
+    @Override
+    public void deleteAllByAdsId(Long adsId) {
+        messageService.deleteAllByAdsId(adsId);
+        messageBoxService.deleteAllByAdsId(adsId);
+    }
+
     private ChatDto messageBoxToChatDto(MessageBox messageBox, Long currentUserId) {
         User secondUser = userService.getUser(currentUserId.equals(messageBox.getToUserId()) ? messageBox.getFromUserId() : messageBox.getToUserId());
         Boolean amISender = messageBox.getFromUserId().equals(currentUserId);
