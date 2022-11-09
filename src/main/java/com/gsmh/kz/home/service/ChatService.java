@@ -1,6 +1,8 @@
 package com.gsmh.kz.home.service;
 
+import com.gsmh.kz.home.model.ChatDeleteDto;
 import com.gsmh.kz.home.model.dto.ChatDto;
+import com.gsmh.kz.home.model.dto.MessageDeleteDto;
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
 import com.gsmh.kz.home.model.entity.Message;
 import com.gsmh.kz.home.model.entity.MessageBox;
@@ -13,4 +15,6 @@ public interface ChatService {
     List<Message> getMessages(Long toUserId, Long adsId);
     List<ChatDto> getChats();
     void deleteAllByAdsId(Long adsId);
+    void deleteChatByAdsIdAndUserId(ChatDeleteDto chatDeleteDto);
+    void deleteMessageById(MessageDeleteDto messageDeleteDto);
 }

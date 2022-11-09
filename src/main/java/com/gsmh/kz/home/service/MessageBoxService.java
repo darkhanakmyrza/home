@@ -47,4 +47,8 @@ public class MessageBoxService {
     public void deleteAllByAdsId(Long adsId) {
         messageBoxRepository.deleteAllByAdsId(adsId);
     }
+
+    public void deleteAllByAdsIdAndUserId(Long adsId, Long fromUserId, Long toUserId){
+        messageBoxRepository.deleteAllByAdsIdAndUserId(adsId, fromUserId, toUserId);
+    }
 }

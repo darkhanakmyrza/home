@@ -39,4 +39,12 @@ public class MessageService {
         messageRepository.deleteAllByAdsId(adsId);
     }
 
+    public void deleteAllByAdsIdAndUserId(Long adsId, Long fromUserId, Long toUserId) {
+        messageRepository.deleteAllByAdsIdAndUserId(adsId, fromUserId, toUserId);
+    }
+
+    public void deleteById(Long messageId) {
+        messageRepository.deleteById(messageId);
+    }
+
 }

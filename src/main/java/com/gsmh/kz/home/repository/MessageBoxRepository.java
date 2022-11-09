@@ -23,4 +23,9 @@ public interface MessageBoxRepository extends JpaRepository<MessageBox, Long> {
     @Modifying
     @Query(value = "delete from messages_box where ads_id =:adsId", nativeQuery = true)
     public void deleteAllByAdsId(Long adsId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from messages_box where ads_id =:adsId and ((from_user_id = :fromUserId and to_user_id = :toUserId) or (from_user_id = :toUserId and to_user_id = :fromUserId))", nativeQuery = true)
+    public void deleteAllByAdsIdAndUserId(Long adsId, Long fromUserId, Long toUserId);
 }

@@ -20,6 +20,9 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
     @Query(value = "delete from messages where ads_id =:adsId", nativeQuery = true)
     public void deleteAllByAdsId(Long adsId);
 
-//    @Query(value = "select * from messages ", nativeQuery = true)
-//    public List<Message> getLastMessagesGroupByAds();
+    @Transactional
+    @Modifying
+    @Query(value = "delete from messages where ads_id =:adsId and ((from_user_id = :fromUserId and to_user_id = :toUserId) or (from_user_id = :toUserId and to_user_id = :fromUserId))", nativeQuery = true)
+    public void deleteAllByAdsIdAndUserId(Long adsId, Long fromUserId, Long toUserId);
+
 }
