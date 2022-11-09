@@ -71,12 +71,13 @@ public class ChatServiceImpl implements ChatService {
     public void deleteMessageById(MessageDeleteDto messageDeleteDto) {
         Long fromUserId = securityService.getCurrentUserId();
         MessageBox messageBox = messageBoxService.findMessageBoxIfExits(fromUserId, messageDeleteDto.getUserId(), messageDeleteDto.getAdsId());
+        messageService.deleteById(messageDeleteDto.getMessageId());
         if (messageBox.getLastMessageId().equals(messageDeleteDto.getMessageId())) {
-            Message NewLastMessage = messageService.getLastMessageByUsersAndAdsId(fromUserId, messageDeleteDto.getUserId(), messageDeleteDto.getAdsId());
-            messageBox.setLastMessageId(NewLastMessage.getId());
+            Message newLastMessage = messageService.getLastMessageByUsersAndAdsId(fromUserId, messageDeleteDto.getUserId(), messageDeleteDto.getAdsId());
+            messageBox.setLastMessageId(newLastMessage.getId());
+            messageBox.setText(newLastMessage.getText());
             messageBoxService.saveEntity(messageBox);
         }
-        messageService.deleteById(messageDeleteDto.getMessageId());
     }
 
     private ChatDto messageBoxToChatDto(MessageBox messageBox, Long currentUserId) {
