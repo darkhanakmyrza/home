@@ -25,6 +25,10 @@ public class MessageBoxService {
         return messageBoxRepository.save(messageBox);
     }
 
+    public MessageBox saveEntity(MessageBox messageBox) {
+        return messageBoxRepository.save(messageBox);
+    }
+
     public MessageBox createMessageBox(Long fromUserId, Long toUserId) {
         MessageBox messageBox = new MessageBox();
         messageBox.setFromUserId(fromUserId);

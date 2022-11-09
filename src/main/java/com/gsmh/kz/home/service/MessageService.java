@@ -30,6 +30,10 @@ public class MessageService {
         return messageRepository.getMessageBoxByUsers(fromUserId, toUserId, adsId);
     }
 
+    public Message getLastMessageByUsersAndAdsId(Long fromUserId, Long toUserId, Long adsId) {
+        return messageRepository.getLastMessageByUsersAndAdsId(fromUserId, toUserId, adsId);
+    }
+
     public Message getById(Long id) {
         return messageRepository.findById(id).orElse(null);
     }

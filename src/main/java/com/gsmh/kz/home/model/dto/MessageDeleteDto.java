@@ -7,4 +7,6 @@ import lombok.Setter;
 @Setter
 public class MessageDeleteDto {
     private Long messageId;
+    private Long userId;
+    private Long adsId;
 }
