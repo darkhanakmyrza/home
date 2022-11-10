@@ -33,4 +33,5 @@ public class AdsDto {
   private String[] photos;
   private Boolean isFavAds;
   private String moderateMsg;
+  private Long createdBy;
 }

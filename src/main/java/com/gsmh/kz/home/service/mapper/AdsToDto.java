@@ -32,6 +32,7 @@ public class AdsToDto {
         adsDto.setPhotos(ad.getPhotos());
         adsDto.setIsFavAds(false);
         adsDto.setModerateMsg(ad.getModerateMsg());
+        adsDto.setCreatedBy(ad.getCreatedBy());
         return adsDto;
     }
 }
