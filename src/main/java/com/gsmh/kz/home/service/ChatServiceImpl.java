@@ -1,6 +1,8 @@
 package com.gsmh.kz.home.service;
 
+import com.gsmh.kz.home.model.ChatDeleteDto;
 import com.gsmh.kz.home.model.dto.ChatDto;
+import com.gsmh.kz.home.model.dto.MessageDeleteDto;
 import com.gsmh.kz.home.model.dto.RequestMessageDto;
 import com.gsmh.kz.home.model.entity.Ad;
 import com.gsmh.kz.home.model.entity.Message;
@@ -29,7 +31,7 @@ public class ChatServiceImpl implements ChatService {
         Long userId = securityService.getCurrentUserId();
         User currentUser = userService.getUser(userId);
         Ad ad = adService.getAd(requestMessageDto.getAdsId());
-        if (ad == null ) {
+        if (ad == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ad not found or toUserId is wrong");
         }
         MessageBox messageBox = messageBoxService.findMessageBoxIfExits(currentUser.getId(), requestMessageDto.getToUserId(), requestMessageDto.getAdsId());
@@ -50,6 +52,36 @@ public class ChatServiceImpl implements ChatService {
         Long currentUserId = securityService.getCurrentUserId();
         List<MessageBox> messageBoxes = messageBoxService.findMessageBoxesByUserId(currentUserId);
         return messageBoxes.stream().map(it -> messageBoxToChatDto(it, currentUserId)).toList();
+    }
+
+    @Override
+    public void deleteAllByAdsId(Long adsId) {
+        messageService.deleteAllByAdsId(adsId);
+        messageBoxService.deleteAllByAdsId(adsId);
+    }
+
+    @Override
+    public void deleteChatByAdsIdAndUserId(ChatDeleteDto chatDeleteDto) {
+        Long fromUserId = securityService.getCurrentUserId();
+        messageService.deleteAllByAdsIdAndUserId(chatDeleteDto.getAdsId(), fromUserId, chatDeleteDto.getUserId());
+        messageBoxService.deleteAllByAdsIdAndUserId(chatDeleteDto.getAdsId(), fromUserId, chatDeleteDto.getUserId());
+    }
+
+    @Override
+    public void deleteMessageById(MessageDeleteDto messageDeleteDto) {
+        Long fromUserId = securityService.getCurrentUserId();
+        MessageBox messageBox = messageBoxService.findMessageBoxIfExits(fromUserId, messageDeleteDto.getUserId(), messageDeleteDto.getAdsId());
+        messageService.deleteById(messageDeleteDto.getMessageId());
+        if (messageBox.getLastMessageId().equals(messageDeleteDto.getMessageId())) {
+            Message newLastMessage = messageService.getLastMessageByUsersAndAdsId(fromUserId, messageDeleteDto.getUserId(), messageDeleteDto.getAdsId());
+            if (newLastMessage != null) {
+                messageBox.setLastMessageId(newLastMessage.getId());
+                messageBox.setText(newLastMessage.getText());
+                messageBoxService.saveEntity(messageBox);
+            }else {
+                messageBoxService.delete(messageBox);
+            }
+        }
     }
 
     private ChatDto messageBoxToChatDto(MessageBox messageBox, Long currentUserId) {
