@@ -74,9 +74,13 @@ public class ChatServiceImpl implements ChatService {
         messageService.deleteById(messageDeleteDto.getMessageId());
         if (messageBox.getLastMessageId().equals(messageDeleteDto.getMessageId())) {
             Message newLastMessage = messageService.getLastMessageByUsersAndAdsId(fromUserId, messageDeleteDto.getUserId(), messageDeleteDto.getAdsId());
-            messageBox.setLastMessageId(newLastMessage.getId());
-            messageBox.setText(newLastMessage.getText());
-            messageBoxService.saveEntity(messageBox);
+            if (newLastMessage != null) {
+                messageBox.setLastMessageId(newLastMessage.getId());
+                messageBox.setText(newLastMessage.getText());
+                messageBoxService.saveEntity(messageBox);
+            }else {
+                messageBoxService.delete(messageBox);
+            }
         }
     }
 
